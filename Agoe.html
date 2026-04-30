@@ -995,6 +995,69 @@ const Wave909 = ({ size = 160, stroke = 'var(--oxblood)' }) => {
   );
 };
 
+/* Hexagon-based geometric mark — used as default release cover icon */
+const HexMark = ({ size = 60, stroke = 'var(--oxblood)' }) => {
+  const R = 50;
+  const hex = (r) => {
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
+      pts.push([Math.cos(a) * r, Math.sin(a) * r]);
+    }
+    return pts;
+  };
+  const outer = hex(R);
+  const inner = hex(R * 0.55);
+  const toPoly = (pts) => pts.map(p => p.join(',')).join(' ');
+  return (
+    <svg viewBox="-60 -60 120 120" width={size} height={size} fill="none" stroke={stroke} strokeWidth="0.9">
+      <polygon points={toPoly(outer)} strokeWidth="1.1"/>
+      <polygon points={toPoly(hex(R * 0.78))} opacity="0.55"/>
+      <polygon points={toPoly(inner)} strokeWidth="1"/>
+      {outer.map((p, i) => (
+        <line key={'s'+i} x1="0" y1="0" x2={p[0]} y2={p[1]} opacity="0.45"/>
+      ))}
+      {outer.map((p, i) => {
+        const q = inner[(i + 1) % 6];
+        return <line key={'z'+i} x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} opacity="0.6"/>;
+      })}
+      <circle cx="0" cy="0" r="3" fill={stroke} stroke="none"/>
+      {outer.map((p, i) => (
+        <circle key={'d'+i} cx={p[0]} cy={p[1]} r="1.6" fill={stroke} stroke="none"/>
+      ))}
+    </svg>
+  );
+};
+
+/* Vertical AGOE totem — stacked letterform sigil, replaces About-page sigil */
+const AgoeTotem = ({ size = 72, stroke = 'var(--oxblood)' }) => (
+  <svg viewBox="-30 -10 60 200" width={size * 0.6} height={size * 2}
+       fill="none" stroke={stroke} strokeWidth="2.4"
+       strokeLinecap="round" strokeLinejoin="round">
+    <g>
+      <path d="M -14 36 L 0 0 L 14 36" />
+      <line x1="-8" y1="22" x2="8" y2="22" />
+    </g>
+    <g transform="translate(0 62)">
+      <path d="M 12 -14
+               C 4 -22, -14 -20, -16 -4
+               C -18 12, 0 18, 12 12
+               L 12 0 L 4 0" />
+    </g>
+    <g transform="translate(0 110)">
+      <path d="M -14 0
+               C -14 -14, 14 -14, 14 0
+               C 14 14, -14 14, -14 0 Z" />
+    </g>
+    <g transform="translate(0 158)">
+      <line x1="-12" y1="-14" x2="-12" y2="14" />
+      <line x1="-12" y1="-14" x2="12" y2="-14" />
+      <line x1="-12" y1="0"   x2="8"  y2="0"  />
+      <line x1="-12" y1="14"  x2="12" y2="14" />
+    </g>
+  </svg>
+);
+
 /* ================ VIEWS ================ */
 const { useState, useEffect, useMemo } = React;
 
@@ -1013,9 +1076,9 @@ const MiniNav = ({ navigate, active }) => (
     </button>
     {[
       ['SOCIALS','socials'],
-      ['NEW CONTENT','content'],
+      ['ALL MUSIC','content'],
       ['ABOUT','about'],
-      ['PROJECTS','projects'],
+      ['UPCOMING PROJECTS','projects'],
     ].map(([l,k]) => (
       <NavBtn key={k} label={l} onClick={() => navigate(k)} active={active===k}/>
     ))}
@@ -1114,7 +1177,7 @@ const HomeView = ({ navigate, active }) => {
         <div className="left">
           <span className="mono caps">AGOE.IDOL</span>
           <span className="mono" style={{opacity:.4}}>//</span>
-          <span className="mono caps">EXPERIMENTAL POP ARTIST</span>
+          <span className="mono caps">INDEPENDENT ALT IDOL  //  EXPERIMENTAL POP ARTIST</span>
         </div>
         <div className="center">
           <span className="dot"></span>
@@ -1123,7 +1186,7 @@ const HomeView = ({ navigate, active }) => {
         <div className="right">
           <span className="mono">SYS/IDOL_5G v0.1.23</span>
           <span className="mono" style={{opacity:.4}}>//</span>
-          <span className="mono">UTC {ts}</span>
+          <span className="mono">HST 12:49:22</span>
         </div>
       </div>
 
@@ -1163,7 +1226,7 @@ const HomeView = ({ navigate, active }) => {
 
             <div style={{marginTop: 46, display:'flex', flexDirection:'column', gap: 0, maxWidth: 280}}>
               <NavBtn label="SOCIALS" onClick={() => navigate('socials')} active={active==='socials'}/>
-              <NavBtn label="NEW CONTENT" onClick={() => navigate('content')} active={active==='content'}/>
+              <NavBtn label="ALL MUSIC" onClick={() => navigate('content')} active={active==='content'}/>
             </div>
           </div>
 
@@ -1171,14 +1234,14 @@ const HomeView = ({ navigate, active }) => {
             <div className="hairline" style={{margin:'18px 0 14px'}}></div>
             <div className="telemetry" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap: 20, maxWidth: 520}}>
               <div>
-                <span className="k">&gt; LOCATION:</span> UNFIXED / LIVE NODE<br/>
-                <span className="k">&gt; PROTOCOL:</span> NEW PERFORMANCE<br/>
-                <span className="k">&gt; NEXT RITUAL:</span> 07.19.2026 — TOKYO
+                <span className="k">&gt; LOCATION:</span> HONOLULU / UNDERGROUND<br/>
+                <span className="k">&gt; PROTOCOL:</span> NEW ALBUM - Un-Uncommon +<br/>
+                <span className="k">&gt; NEXT RITUAL:</span> ??.??.2026 — HONOLULU
               </div>
               <div>
                 <span className="k">&gt; VOICE RANGE:</span> 2.3 OCT / F3-A5<br/>
                 <span className="k">&gt; SIGNAL DEPTH:</span> <b style={{color:'var(--oxblood-bright)'}}>0.982</b><br/>
-                <span className="k">&gt; STATUS:</span> WATCHING BACK
+                <span className="k">&gt; STATUS:</span> FEEDBACK ON
               </div>
             </div>
           </div>
@@ -1193,7 +1256,7 @@ const HomeView = ({ navigate, active }) => {
               <div className="caption"><span className="num">02</span>NAVIGATION</div>
               <div style={{marginTop: 10, display:'flex', flexDirection:'column'}}>
                 <NavBtn label="ABOUT" onClick={() => navigate('about')} active={active==='about'}/>
-                <NavBtn label="PROJECTS" onClick={() => navigate('projects')} active={active==='projects'}/>
+                <NavBtn label="UPCOMING PROJECTS" onClick={() => navigate('projects')} active={active==='projects'}/>
               </div>
             </div>
             <div style={{textAlign:'right'}}>
@@ -1231,8 +1294,8 @@ const HomeView = ({ navigate, active }) => {
             <span className="cnr tr"></span>
             <span className="cnr bl"></span>
             <h3>/ SIGNAL INTEGRITY — CH.06</h3>
-            <div className="line">NOISE IS PART OF THE CODE</div>
-            <div className="line">CALIBRATE · LISTEN · DECIPHER</div>
+            <div className="line">NOISE</div>
+            <div className="line">ACT · LISTEN · DESIRE</div>
             <div className="bar">
               {[1,1,1,1,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1].map((v,i)=> (
                 <i key={i} className={v?'on':''}/>
@@ -1253,8 +1316,8 @@ const HomeView = ({ navigate, active }) => {
           {Array.from({length: 2}).map((_, i) => (
             <React.Fragment key={i}>
               <span>NEW SINGLE <b>"STATIC PRAYER"</b> — OUT NOW <span className="mark">◆</span></span>
-              <span>LIVE RITUAL — TOKYO — 07.19.26 <span className="mark">◆</span></span>
-              <span>EDITION 002 / VINYL PRESS — 500 UNITS <span className="mark">◆</span></span>
+              <span>LIVE RITUAL — HONOLULU — XX.XX.26 <span className="mark">◆</span></span>
+              <span>UN-UNCOMMON + / MAY 22 2026 <span className="mark">◆</span></span>
               <span>SIGNAL DEPTH 0.982 — IDOL STATE LIVE <span className="mark">◆</span></span>
               <span>ENTER THE FEED <span className="mark">◆</span></span>
               <span>WATCHING BACK <span className="mark">◆</span></span>
@@ -1272,11 +1335,11 @@ const HomeView = ({ navigate, active }) => {
 };
 
 const SOCIALS = [
-  { name:'INSTAGRAM', handle:'@agoe.idol', followers:'184K', posts:'0.412', cta:'ENTER FEED' },
-  { name:'X / TWITTER', handle:'@agoe_signal', followers:'62.3K', posts:'1.8K', cta:'OPEN STREAM' },
-  { name:'TIKTOK', handle:'@agoe.the.idol', followers:'311K', posts:'0.089', cta:'BEGIN RITUAL' },
-  { name:'YOUTUBE', handle:'/agoeofficial', followers:'44.1K', posts:'027', cta:'WATCH SIGNAL' },
-  { name:'SOUNDCLOUD', handle:'/agoe-signal', followers:'28.7K', posts:'041', cta:'TUNE IN' },
+  { name:'INSTAGRAM', handle:'@agoetheidol', followers:'184K', posts:'0.412', cta:'ENTER FEED' },
+  { name:'YOUTUBE', handle:'@agoetheidol', followers:'62.3K', posts:'1.8K', cta:'OPEN STREAM' },
+  { name:'TIKTOK', handle:'@agoetheidol', followers:'311K', posts:'0.089', cta:'BEGIN RITUAL' },
+  { name:'X', handle:'@agoetheidol', followers:'44.1K', posts:'027', cta:'WATCH SIGNAL' },
+  { name:'BANDCAMP', handle:'@agoetheidol', followers:'28.7K', posts:'041', cta:'TUNE IN' },
   { name:'DISCORD', handle:'/theshrine', followers:'9.2K', posts:'LIVE', cta:'JOIN THE SHRINE' },
 ];
 const SocialsView = ({ navigate, active }) => (
@@ -1306,7 +1369,7 @@ const SocialsView = ({ navigate, active }) => (
     <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: 40, marginTop: 20}}>
       <div className="telemetry">
         <div className="caption" style={{marginBottom:10}}><span className="num">A</span>FOLLOW DIRECT</div>
-        Type <span style={{color:'var(--oxblood)'}}>@agoe.idol</span> into any feed. The shrine opens where you're standing.
+        Type <span style={{color:'var(--oxblood)'}}>@agoetheidol</span> into any feed. The shrine opens where you're standing.
       </div>
       <div className="telemetry">
         <div className="caption" style={{marginBottom:10}}><span className="num">B</span>NEWSLETTER / SIGNAL</div>
@@ -1314,7 +1377,7 @@ const SocialsView = ({ navigate, active }) => (
       </div>
       <div className="telemetry">
         <div className="caption" style={{marginBottom:10}}><span className="num">C</span>PRESS / BOOKING</div>
-        <span style={{color:'var(--ink)'}}>signal@agoe.idol</span><br/>
+        <span style={{color:'var(--ink)'}}>im@connoi.se</span><br/>
         All requests routed through the shrine.
       </div>
     </div>
@@ -1322,12 +1385,12 @@ const SocialsView = ({ navigate, active }) => (
 );
 
 const RELEASES = [
-  { n:'001', title:'STATIC PRAYER', kind:'SINGLE', date:'04.11.2026', dur:'04:08', tag:'LATEST' },
-  { n:'002', title:'LIVE IN THE SYNTHETIC', kind:'EP / 4 TRACKS', date:'02.28.2026', dur:'18:42', tag:'NEW' },
-  { n:'003', title:'IDOL / INTERFACE', kind:'ALBUM / 11 TRACKS', date:'11.19.2025', dur:'42:17', tag:'LP' },
-  { n:'004', title:'REAL-TIME PRAYER', kind:'SINGLE', date:'08.03.2025', dur:'03:51', tag:'' },
-  { n:'005', title:'ENTER THE FEED', kind:'REMIX PACK', date:'05.17.2025', dur:'27:04', tag:'REMIX' },
-  { n:'006', title:'NOISE IS PART OF THE CODE', kind:'B-SIDE / VINYL', date:'01.09.2025', dur:'06:33', tag:'' },
+  { n:'001', title:'AGOE COLLECTION, VOL. 1', kind:'ALBUM / COMPILATION', date:'2025', dur:'52:08', tag:'LATEST' },
+  { n:'002', title:'NOTHING HAPPENS IN APRIL', kind:'ALBUM / LP', date:'2024', dur:'38:21', tag:'LP' },
+  { n:'003', title:'SUMMER THRENODY', kind:'SINGLE', date:'2024', dur:'04:12', tag:'' },
+  { n:'004', title:'MICROMASHII VOL. 3', kind:'REMIX / COMPILATION', date:'2024', dur:'24:46', tag:'REMIX' },
+  { n:'005', title:'UN-UNCOMMON', kind:'ALBUM / LP', date:'2023', dur:'34:55', tag:'' },
+  { n:'006', title:'LONELY SOUL', kind:'SINGLE', date:'2022', dur:'03:48', tag:'DEBUT' },
 ];
 
 const ReleaseRow = ({ r }) => {
@@ -1345,7 +1408,7 @@ const ReleaseRow = ({ r }) => {
         }}/>
         <div style={{position:'absolute', inset:8, border:'1px solid var(--hairline-strong)'}}/>
         <div style={{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)'}}>
-          <Sigil size={60}/>
+          <HexMark size={60}/>
         </div>
       </div>
       <div className="rr-title">
@@ -1410,14 +1473,14 @@ const ContentView = ({ navigate, active }) => {
 
 const AboutView = ({ navigate, active }) => (
   <div className="subview page" data-screen-label="04 About">
-    <SubHeader idx="04" label="ABOUT // IDOL PROTOCOL" title="WATCHING BACK" navigate={navigate} active={active}/>
+    <SubHeader idx="04" label="ABOUT // IDOL PROTOCOL" title="FEEDBACK" navigate={navigate} active={active}/>
 
     <div className="about-grid">
       <div>
         <p style={{fontSize:22, lineHeight:1.5, color:'var(--ink)', letterSpacing:'.01em'}}>
-          Agoe exists between signal and silence — synthetic devotion, human emotion, a new performance protocol.
+          Alt idol, experimental pop, digital art
           <br/><br/>
-          <span style={{color:'var(--ink-dim)', fontSize:17}}>This is not a show. This is a shift.</span>
+          <span style={{color:'var(--ink-dim)', fontSize:17}}>A conduit for the Aether.</span>
         </p>
 
         <div className="rule">
@@ -1427,18 +1490,16 @@ const AboutView = ({ navigate, active }) => (
         </div>
 
         <p>
-          The idol is not a person. The idol is an interface — a surface that reflects
-          whatever the feed brings to it. Agoe is a vessel for that reflection, a frequency
-          tuned between pop music and ritual broadcast.
+          Idol is an interface for devotion. Formless unconsciousness pervades culture and society as The Aether.
+          Agoe is a vessel for what is denied on the surface. Ritual performance is the tip of the spear that
+          disrupts the smooth surface.
         </p>
         <p>
-          Every release is a transmission. Every performance is a rite. The audience does not
-          watch. The audience is watched back. Noise is part of the code.
+          Releases are a ritual lithography. Every performance is a rite. The audience is feedback. Noise is
+          form to The Aether.
         </p>
         <p>
-          Agoe was born from the collapse of the distance between artist and algorithm — a
-          voice that learned to speak through the machine without being consumed by it.
-          This is pop music as liturgy. This is the shrine as interface.
+          Agoe resides in Honolulu, HI.
         </p>
       </div>
 
@@ -1449,23 +1510,23 @@ const AboutView = ({ navigate, active }) => (
             <span style={{color:'var(--oxblood-bright)'}}>● LIVE</span>
           </div>
           <div className="row"><span>IDENTITY</span><span>AGOE THE IDOL</span></div>
-          <div className="row"><span>CLASS</span><span>EXPERIMENTAL POP</span></div>
-          <div className="row"><span>ORIGIN</span><span>UNFIXED</span></div>
-          <div className="row"><span>ACTIVE</span><span>2024 — PRESENT</span></div>
-          <div className="row"><span>PROTOCOL</span><span>NEW PERFORMANCE</span></div>
-          <div className="row"><span>LABEL</span><span>SHRINE RECORDS</span></div>
-          <div className="row"><span>MGMT</span><span>NODE CORPOREAL</span></div>
+          <div className="row"><span>CLASS</span><span>ALT IDOL/EXPERIMENTAL POP</span></div>
+          <div className="row"><span>ORIGIN</span><span>HONOLULU</span></div>
+          <div className="row"><span>ACTIVE</span><span>2021 — PRESENT</span></div>
+          <div className="row"><span>PROTOCOL</span><span>NEW ALBUM - UNUNCOMMON +</span></div>
+          <div className="row"><span>LABEL</span><span>CONNOI.SE</span></div>
+          <div className="row"><span>MGMT</span><span>CONNOI.SE</span></div>
           <div className="row"><span>SIGNAL DEPTH</span><span style={{color:'var(--oxblood-bright)'}}>0.982</span></div>
           <div className="row"><span>VOICE RANGE</span><span>F3 → A5</span></div>
           <div className="row" style={{borderBottom:'none'}}><span>STATUS</span><span style={{color:'var(--oxblood-bright)'}}>WATCHING BACK</span></div>
         </div>
 
         <div style={{marginTop: 24, display:'flex', gap: 14, alignItems:'flex-start'}}>
-          <Sigil size={72}/>
+          <AgoeTotem size={72}/>
           <div className="telemetry" style={{paddingTop: 8}}>
             <div className="caption" style={{marginBottom: 6}}>/ SIGIL_003</div>
             Worn on the inside of the left wrist.<br/>
-            Activates at 432Hz.
+            Activates the Aether.
           </div>
         </div>
       </div>
@@ -1474,12 +1535,9 @@ const AboutView = ({ navigate, active }) => (
 );
 
 const PROJECTS = [
-  { n:'P01', title:'IDOL / INTERFACE LP', type:'FULL LENGTH RECORD', year:'2025', collab:'SHRINE RECORDS' },
-  { n:'P02', title:'REAL-TIME PRAYER TOUR', type:'LIVE RITUAL SERIES', year:'2025—26', collab:'10 CITIES' },
-  { n:'P03', title:'THE SHRINE (FILM)', type:'SHORT FILM / 22 MIN', year:'2025', collab:'DIR. N. OKONKWO' },
-  { n:'P04', title:'SIGNAL / FRAGMENT', type:'GENERATIVE INSTALLATION', year:'2025', collab:'SERPENTINE NORTH' },
-  { n:'P05', title:'NOISE IS PART OF THE CODE', type:'ART BOOK / 240 PP', year:'2024', collab:'NIEVES EDITIONS' },
-  { n:'P06', title:'IDOL_OS v0.1', type:'INTERACTIVE WEB PIECE', year:'2024', collab:'W/ STUDIO WOV' },
+  { n:'P01', title:'UN-UNCOMMON +', type:'REMAKE', year:'MAY 22 2026', collab:'BANDCAMP' },
+  { n:'P02', title:'WHISPERING STAR', type:'FULL LENGTH ALBUM', year:'2026', collab:'NA' },
+  { n:'P03', title:'IF/IDOL', type:'FULL LENGTH ALBUM / TYPE', year:'2026-27', collab:'NA' },
 ];
 const ProjectsView = ({ navigate, active }) => (
   <div className="subview page" data-screen-label="05 Projects">
@@ -1502,15 +1560,15 @@ const ProjectsView = ({ navigate, active }) => (
 
     <div className="rule">
       <div className="l"/>
-      <div className="t">// ARCHIVE v0.1.23 — 06 ENTRIES</div>
+      <div className="t">// ARCHIVE v0.1.23 — 03 ENTRIES</div>
       <div className="r"/>
     </div>
 
     <div style={{display:'grid', gridTemplateColumns:'1.6fr 1fr', gap: 60, marginTop: 30, alignItems:'center'}}>
       <div className="telemetry">
         <div className="caption" style={{marginBottom: 12}}>/ COMMISSION / COLLABORATION</div>
-        Agoe accepts a limited number of collaborations per cycle.<br/>
-        Send a signal to <span style={{color:'var(--oxblood-bright)'}}>shrine@agoe.idol</span> — describe the ritual.
+        Agoe accepts frequent collaboration<br/>
+        Send a signal to <span style={{color:'var(--oxblood-bright)'}}>im@connoi.se</span>
       </div>
       <div style={{display:'flex', justifyContent:'flex-end'}}>
         <WireIcosa size={180}/>
