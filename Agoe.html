@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AGOE — IDOL INTERFACE SYSTEM</title>
+<title>AGOE - IDOL INTERFACE SYSTEM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
   :root{
+    /*EDITMODE-BEGIN*/
     --base: #0A0606;
     --base-2: #100808;
     --oxblood: #801515;
@@ -22,6 +23,7 @@
     --ink: #E8D8D8;
     --ink-dim: #8a6e6e;
     --ink-ghost: #4e3a3a;
+    /*EDITMODE-END*/
   }
   *{ box-sizing: border-box; margin:0; padding:0; }
   html, body{ background: var(--base); color: var(--ink); }
@@ -55,7 +57,7 @@
       radial-gradient(ellipse at 20% 10%, rgba(128, 21, 21, 0.08) 0%, transparent 45%);
   }
 
-  /* ---------- Eye motif layer ---------- */
+  /* ---------- Eye motif layer (persistent, big, low-opacity) ---------- */
   .eye-layer{
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     display: flex; align-items: center; justify-content: center;
@@ -82,6 +84,7 @@
   .fc-bl{ bottom: 14px; left: 18px; border-right:none; border-top:none; }
   .fc-br{ bottom: 14px; right: 18px; border-left:none; border-top:none; }
 
+  /* top bar */
   .topbar{
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -108,6 +111,7 @@
   @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
   .live{ color: var(--oxblood-bright); letter-spacing: .2em; font-weight:500;}
 
+  /* side rails (tick marks) */
   .rail{
     position: absolute; top: 80px; bottom: 60px;
     width: 14px;
@@ -122,7 +126,7 @@
   .rail.right{ right: 8px; transform: rotate(0deg); writing-mode: vertical-rl; }
   .rail span{ padding: 2px 0; }
 
-  /* ---------- Nav ---------- */
+  /* ---------- Nav (asymmetric, HUD) ---------- */
   .nav-float{ position: absolute; z-index: 5; }
   .nav-item{
     font-family: 'Space Grotesk', sans-serif;
@@ -167,7 +171,7 @@
   .wordmark{
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: clamp(140px, 19vw, 320px);
+    font-size: clamp(120px, 16vw, 270px);
     line-height: .82;
     color: var(--oxblood);
     letter-spacing: -.04em;
@@ -203,20 +207,20 @@
     grid-template-rows: auto auto auto;
     gap: 0;
     margin-top: 20px;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 220px);
   }
   .hero-left{
     position: relative;
-    padding: 40px 40px 40px 20px;
+    padding: 40px 40px 24px 20px;
     display:flex; flex-direction:column; justify-content:space-between;
-    min-height: 640px;
+    min-height: 0;
   }
   .hero-right{
     position: relative;
     padding: 40px 20px 40px 40px;
     border-left: 1px solid var(--hairline);
     display:flex; flex-direction:column; justify-content:space-between;
-    min-height: 640px;
+    min-height: 0;
   }
 
   .tagline{
@@ -237,7 +241,7 @@
   }
   .sub-tags .sep{ color: var(--oxblood); margin: 0 8px; }
 
-  /* ---------- HUD viewport ---------- */
+  /* ---------- HUD viewport (the central framed monitor) ---------- */
   .viewport{
     position: relative;
     border: 1px solid var(--oxblood);
@@ -278,7 +282,7 @@
   }
   .viewport .bar i.on{ background: var(--oxblood-bright); box-shadow: 0 0 6px var(--oxblood-bright); }
 
-  /* ---------- Wireframe orbits ---------- */
+  /* ---------- Wireframe orbits (right side) ---------- */
   .wire-stage{
     position: relative;
     flex: 1;
@@ -298,7 +302,7 @@
   .sigil svg{ width: 100%; height: 100%; }
   .sigil.bl{ bottom: 60px; left: 40px; }
 
-  /* ---------- Marquee / ticker ---------- */
+  /* ---------- Marquee / ticker at bottom ---------- */
   .ticker{
     position: relative;
     border-top: 1px solid var(--hairline);
@@ -321,7 +325,7 @@
   .ticker-track span .mark{ color: var(--oxblood); margin: 0 12px; }
   @keyframes tick{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-  /* ---------- Subviews ---------- */
+  /* ---------- Subviews (shared) ---------- */
   .subview{
     position: relative;
     padding: 30px 60px 60px 60px;
@@ -363,9 +367,15 @@
     position: relative;
     cursor: pointer;
     transition: background .2s;
+    /* anchor-as-card: kill default styles */
+    text-decoration: none;
+    color: inherit;
+    display: block;
   }
   .social-card:hover{ background: rgba(128, 21, 21, .08); }
   .social-card:hover .sc-cta{ color: var(--oxblood-bright); text-shadow: 0 0 10px rgba(183,29,29,.6); }
+  .social-card:hover .sc-name{ color: var(--oxblood-bright); }
+  .social-card:focus-visible{ outline: 1px solid var(--oxblood-bright); outline-offset: -2px; }
   .social-card .sc-num{
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; color: var(--oxblood); letter-spacing:.2em;
@@ -374,6 +384,7 @@
     font-size: 28px; font-weight: 500; letter-spacing: .04em;
     margin-top: 20px; text-transform: uppercase;
     color: var(--ink);
+    transition: color .15s ease;
   }
   .social-card .sc-handle{
     font-family: 'JetBrains Mono', monospace;
@@ -393,9 +404,10 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
     color: var(--oxblood);
+    transition: color .15s ease, text-shadow .15s ease;
   }
 
-  /* releases */
+  /* content releases */
   .releases{
     margin-top: 40px;
     border-top: 1px solid var(--hairline);
@@ -520,6 +532,7 @@
   }
   .project-row .pr-type b{ color: var(--ink); font-weight: 400; display:block; margin-bottom: 2px;}
 
+  /* section divider rule with inline label */
   .rule{
     display:grid; grid-template-columns: 40px auto 1fr;
     align-items:center; gap: 12px;
@@ -532,10 +545,201 @@
     color: var(--oxblood);
   }
 
-  /* ---------- Enrollment ---------- */
+  /* ---------- Promotion (press kit) ---------- */
+  .promo-grid{
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 64px;
+    margin-top: 52px;
+    align-items: start;
+  }
+  .promo-carousel{
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .pc-frame{
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: #0c0a09;
+    border: 1px solid var(--oxblood);
+    overflow: hidden;
+  }
+  .pc-frame .cnr{
+    position:absolute; width:12px; height:12px; border:1px solid var(--oxblood-bright);
+    z-index: 5; pointer-events:none;
+  }
+  .pc-frame .cnr.tl{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .pc-frame .cnr.tr{ top:-1px; right:-1px; border-left:none; border-bottom:none; }
+  .pc-frame .cnr.bl{ bottom:-1px; left:-1px; border-right:none; border-top:none; }
+  .pc-frame .cnr.br{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .pc-img{
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    background: #0c0a09;
+    opacity: 0;
+    transition: opacity .9s ease;
+    filter: contrast(1.04) saturate(.92);
+  }
+  .pc-img.on{ opacity: 1; }
+  .pc-meta{
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; justify-content: space-between;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--ink);
+    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.65));
+    z-index: 3;
+  }
+  .pc-meta span:last-child{ color: var(--oxblood-bright); }
+  .pc-nav{
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px;
+    background: rgba(10,8,8,.55);
+    border: 1px solid var(--oxblood);
+    color: var(--ink);
+    font-size: 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .18s, color .18s, box-shadow .18s;
+    z-index: 4;
+  }
+  .pc-nav:hover{
+    background: var(--oxblood-bright);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(183,29,29,.55);
+  }
+  .pc-nav.prev{ left: 14px; }
+  .pc-nav.next{ right: 14px; }
+  .pc-thumbs{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .pc-thumb{
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: transparent;
+    border: 1px solid var(--hairline-strong);
+    padding: 0; cursor: pointer;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .pc-thumb img{
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: .55;
+    transition: opacity .2s;
+  }
+  .pc-thumb:hover img{ opacity: .85; }
+  .pc-thumb.on{ border-color: var(--oxblood-bright); box-shadow: 0 0 0 1px var(--oxblood-bright) inset; }
+  .pc-thumb.on img{ opacity: 1; }
+  .pc-progress{
+    height: 2px; background: var(--hairline);
+    overflow: hidden;
+  }
+  .pc-progress-bar{
+    height: 100%;
+    background: var(--oxblood-bright);
+    box-shadow: 0 0 8px var(--oxblood-bright);
+    transform-origin: left center;
+    animation: pcProgress 4.2s linear forwards;
+  }
+  @keyframes pcProgress{
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  .promo-info{
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .promo-lede{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 2.2vw, 38px);
+    line-height: 1.32;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -.01em;
+    text-wrap: pretty;
+  }
+  .promo-lede b{ color: var(--oxblood); font-weight: 600; }
+  .promo-card{
+    position: relative;
+    border: 1px solid var(--hairline-strong);
+    padding: 26px 30px 28px;
+  }
+  .promo-card::before, .promo-card::after{
+    content:""; position:absolute; width:10px; height:10px; border:1px solid var(--oxblood);
+  }
+  .promo-card::before{ top:-5px; left:-5px; border-right:none; border-bottom:none; }
+  .promo-card::after{ bottom:-5px; right:-5px; border-left:none; border-top:none; }
+  .pcard-eyebrow{ margin-bottom: 20px; }
+  .pcard-eyebrow .caption{ font-size: 13px; letter-spacing: .22em; }
+  .pcard-body{
+    display: flex; gap: 26px; align-items: flex-start;
+  }
+  .pcard-cover{
+    width: 148px; height: 148px;
+    border: 1px solid var(--hairline-strong);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .pcard-cover img{ width: 100%; height: 100%; object-fit: cover; }
+  .pcard-text{
+    display: flex; flex-direction: column;
+    gap: 10px; flex: 1; min-width: 0;
+  }
+  .pcard-title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 2.6vw, 44px); font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -.012em;
+    line-height: 1.05;
+  }
+  .pcard-meta{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .pcard-meta .sep{ color: var(--oxblood); margin: 0 6px; }
+  .pcard-cta{
+    align-self: flex-start;
+    margin-top: 14px;
+    background: transparent;
+    border: 1px solid var(--oxblood);
+    color: var(--oxblood-bright);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; letter-spacing: .22em; text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 14px;
+    transition: background .18s, color .18s, box-shadow .18s;
+  }
+  .pcard-cta:hover{
+    background: var(--oxblood-bright); color: #fff;
+    box-shadow: 0 0 14px rgba(183,29,29,.55);
+  }
+  .promo-mail{
+    color: var(--oxblood-bright);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+  .promo-mail:hover{ color: var(--ink); }
+
+  @media (max-width: 900px){
+    .promo-grid{ grid-template-columns: 1fr; gap: 36px; }
+    .pcard-cover{ width: 110px; height: 110px; }
+    .promo-lede{ font-size: 22px; }
+    .pcard-title{ font-size: 26px; }
+    .pcard-meta{ font-size: 12px; }
+    .pcard-eyebrow .caption{ font-size: 12px; }
+    .pcard-cta{ font-size: 12px; padding: 12px 18px; }
+  }
+
+  /* ---------- Enrollment (email signal) ---------- */
   .enroll{
     position: relative;
-    margin-top: 22px;
+    margin-top: 10px;
     border: 1px solid var(--hairline-strong);
     padding: 22px 24px 24px;
     display: grid;
@@ -622,6 +826,42 @@
     .enroll{ grid-template-columns: 1fr; gap: 14px; }
   }
 
+  #tweaks{
+    position: fixed; right: 18px; bottom: 18px; z-index: 200;
+    width: 280px;
+    background: rgba(10, 6, 6, .94);
+    border: 1px solid var(--oxblood);
+    backdrop-filter: blur(10px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink);
+    display: none;
+  }
+  #tweaks.on{ display: block; }
+  #tweaks .hd{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 12px; border-bottom: 1px solid var(--hairline-strong);
+    color: var(--oxblood); letter-spacing: .2em; text-transform: uppercase;
+    font-size: 10px;
+  }
+  #tweaks .row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 12px; border-bottom: 1px dashed var(--hairline);
+    gap: 8px;
+  }
+  #tweaks label{ color: var(--ink-dim); letter-spacing: .1em; text-transform: uppercase; font-size: 10px;}
+  #tweaks input[type=range]{ width: 110px; accent-color: var(--oxblood-bright); }
+  #tweaks .swatches{ display:flex; gap: 6px;}
+  #tweaks .sw{ width:18px; height:18px; border:1px solid var(--hairline-strong); cursor:pointer;}
+  #tweaks .sw.on{ outline: 2px solid var(--ink); outline-offset: 2px; }
+  #tweaks select, #tweaks button{
+    background: transparent; color: var(--ink);
+    border:1px solid var(--hairline-strong);
+    padding: 4px 8px; font-family: inherit; font-size: 10px;
+    text-transform: uppercase; letter-spacing: .12em; cursor: pointer;
+  }
+  #tweaks button:hover{ border-color: var(--oxblood-bright); color: var(--oxblood-bright); }
+
   /* ---------- Page transition ---------- */
   .page{
     animation: fadeUp .4s ease both;
@@ -631,6 +871,7 @@
     to{ opacity: 1; transform: translateY(0); }
   }
 
+  /* transitions between views */
   .glitch-flash{
     position: fixed; inset: 0; z-index: 150; pointer-events: none;
     background: var(--oxblood);
@@ -643,6 +884,7 @@
     100%{ opacity: 0; }
   }
 
+  /* ---------- Utility ---------- */
   .bracket-l::before, .bracket-r::after{
     font-family: 'JetBrains Mono', monospace; color: var(--oxblood);
     margin: 0 6px;
@@ -651,7 +893,8 @@
   .bracket-r::after{ content: "]"; }
 
   @media (max-width: 900px){
-    .hero{ grid-template-columns: 1fr; }
+    .hero{ grid-template-columns: 1fr; min-height: 0; }
+    .hero-left{ padding: 30px 20px 24px; }
     .hero-right{ border-left: none; border-top: 1px solid var(--hairline); padding: 40px 20px;}
     .about-grid{ grid-template-columns: 1fr; gap: 30px; }
     .project-row{ grid-template-columns: 50px 1fr 100px; }
@@ -674,7 +917,41 @@
 
 <div id="root"></div>
 
-<!-- ============ EYE MOTIF SVG ============ -->
+<!-- Tweaks panel -->
+<div id="tweaks">
+  <div class="hd"><span>// TWEAKS</span><span id="tClose" style="cursor:pointer">×</span></div>
+  <div class="row">
+    <label>Accent</label>
+    <div class="swatches" id="swatches">
+      <div class="sw on" data-c="#801515" style="background:#801515"></div>
+      <div class="sw" data-c="#5F003E" style="background:#5F003E"></div>
+      <div class="sw" data-c="#7B3300" style="background:#7B3300"></div>
+      <div class="sw" data-c="#B71D1D" style="background:#B71D1D"></div>
+    </div>
+  </div>
+  <div class="row">
+    <label>Scanlines</label>
+    <input type="range" id="tScan" min="0" max="100" value="100" />
+  </div>
+  <div class="row">
+    <label>Eye motif</label>
+    <input type="range" id="tEye" min="0" max="60" value="22" />
+  </div>
+  <div class="row">
+    <label>Density</label>
+    <select id="tDensity">
+      <option value="normal">Normal</option>
+      <option value="dense">Dense</option>
+      <option value="sparse">Sparse</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Background</label>
+    <button id="tBgSwap">Cycle base</button>
+  </div>
+</div>
+
+<!-- ============ EYE MOTIF SVG (halftone-style line eyes) ============ -->
 <svg xmlns="http://www.w3.org/2000/svg" id="eyeSvgTemplate" style="display:none" viewBox="0 0 2000 900">
   <defs>
     <pattern id="scanpat" patternUnits="userSpaceOnUse" width="4" height="4">
@@ -683,6 +960,7 @@
     </pattern>
   </defs>
   <g fill="none" stroke="#7a1515" stroke-width="1.2">
+    <!-- LEFT EYE -->
     <g transform="translate(480 450)">
       <ellipse cx="0" cy="0" rx="260" ry="95"/>
       <ellipse cx="0" cy="0" rx="230" ry="78"/>
@@ -707,6 +985,7 @@
       <line x1="0" y1="-130" x2="0" y2="-100" stroke-dasharray="2 4"/>
       <line x1="0" y1="100" x2="0" y2="130" stroke-dasharray="2 4"/>
     </g>
+    <!-- RIGHT EYE -->
     <g transform="translate(1520 450)">
       <ellipse cx="0" cy="0" rx="260" ry="95"/>
       <ellipse cx="0" cy="0" rx="230" ry="78"/>
@@ -731,10 +1010,15 @@
       <line x1="0" y1="-130" x2="0" y2="-100" stroke-dasharray="2 4"/>
       <line x1="0" y1="100" x2="0" y2="130" stroke-dasharray="2 4"/>
     </g>
+    <!-- bridge connector -->
     <line x1="760" y1="450" x2="1240" y2="450" stroke-dasharray="1 8" opacity=".4"/>
     <text x="1000" y="445" text-anchor="middle" fill="#7a1515" font-family="monospace" font-size="11" letter-spacing="4" stroke="none">// WATCHED</text>
   </g>
 </svg>
+
+<script type="application/json" id="config">
+  {"accent": "#801515"}
+</script>
 
 <script>
 /* ---------- Eye layer inject ---------- */
@@ -746,870 +1030,50 @@
   clone.removeAttribute('id');
   layer.appendChild(clone);
 })();
+
+/* ---------- Tweaks bridge ---------- */
+(function(){
+  const tweaks = document.getElementById('tweaks');
+  window.addEventListener('message', e => {
+    if(!e.data || !e.data.type) return;
+    if(e.data.type === '__activate_edit_mode') tweaks.classList.add('on');
+    if(e.data.type === '__deactivate_edit_mode') tweaks.classList.remove('on');
+  });
+  window.parent && window.parent.postMessage({type:'__edit_mode_available'}, '*');
+  document.getElementById('tClose').onclick = () => tweaks.classList.remove('on');
+
+  document.querySelectorAll('#swatches .sw').forEach(s => {
+    s.onclick = () => {
+      document.querySelectorAll('#swatches .sw').forEach(x=>x.classList.remove('on'));
+      s.classList.add('on');
+      document.documentElement.style.setProperty('--oxblood', s.dataset.c);
+    };
+  });
+  document.getElementById('tScan').oninput = e => {
+    document.getElementById('scanlines').style.opacity = (e.target.value/100);
+  };
+  document.getElementById('tEye').oninput = e => {
+    document.querySelector('#eyeLayer svg').style.opacity = (e.target.value/100);
+  };
+  document.getElementById('tDensity').onchange = e => {
+    document.body.dataset.density = e.target.value;
+  };
+  const bgs = ['#0A0606', '#080404', '#120808', '#0a0808'];
+  let bi = 0;
+  document.getElementById('tBgSwap').onclick = () => {
+    bi = (bi+1)%bgs.length;
+    document.documentElement.style.setProperty('--base', bgs[bi]);
+    document.body.style.background = bgs[bi];
+  };
+})();
 </script>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
-<script type="text/babel">
-/* ================ WIREFRAMES ================ */
-const WireSphere = ({ size = 320, stroke = 'var(--oxblood)', lines = 14 }) => {
-  const lats = [];
-  const r = 150;
-  for (let i = 1; i < lines; i++) {
-    const t = (i / lines) * Math.PI;
-    const ry = Math.sin(t) * r;
-    const cy = -Math.cos(t) * r * 0.3;
-    lats.push(<ellipse key={'la'+i} cx="0" cy={cy} rx={r} ry={ry*0.35} />);
-  }
-  const lngs = [];
-  for (let i = 0; i < lines; i++) {
-    const t = (i / lines) * Math.PI;
-    const rx = Math.cos(t) * r;
-    lngs.push(<ellipse key={'ln'+i} cx="0" cy="0" rx={Math.abs(rx)} ry={r} />);
-  }
-  return (
-    <svg viewBox="-180 -180 360 360" width={size} height={size} fill="none" stroke={stroke} strokeWidth="0.8">
-      <circle cx="0" cy="0" r={r} strokeWidth="1.2" />
-      <g opacity="0.85">{lats}</g>
-      <g opacity="0.55">{lngs}</g>
-      <circle cx="0" cy="0" r="3" fill={stroke} stroke="none" />
-      <g stroke={stroke} opacity="0.6">
-        <line x1="-180" y1="0" x2="-160" y2="0" />
-        <line x1="160" y1="0" x2="180" y2="0" />
-        <line x1="0" y1="-180" x2="0" y2="-160" />
-        <line x1="0" y1="160" x2="0" y2="180" />
-      </g>
-    </svg>
-  );
-};
-
-const WireIcosa = ({ size = 280, stroke = 'var(--oxblood)' }) => {
-  const R = 140;
-  const pts = [];
-  pts.push([0, -R]);
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
-    pts.push([Math.cos(a) * R * 0.9, -R * 0.45]);
-  }
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2 - Math.PI / 2 + Math.PI / 5;
-    pts.push([Math.cos(a) * R * 0.9, R * 0.45]);
-  }
-  pts.push([0, R]);
-
-  const edges = [];
-  for (let i = 1; i <= 5; i++) edges.push([0, i]);
-  for (let i = 1; i <= 5; i++) edges.push([i, i === 5 ? 1 : i + 1]);
-  for (let i = 0; i < 5; i++) {
-    const a = i + 1, b = i + 6, c = ((i + 1) % 5) + 6;
-    edges.push([a, b]);
-    edges.push([a, c]);
-  }
-  for (let i = 6; i <= 10; i++) edges.push([i, i === 10 ? 6 : i + 1]);
-  for (let i = 6; i <= 10; i++) edges.push([i, 11]);
-
-  return (
-    <svg viewBox="-180 -180 360 360" width={size} height={size} fill="none" stroke={stroke} strokeWidth="1">
-      {edges.map(([a, b], i) => (
-        <line key={i} x1={pts[a][0]} y1={pts[a][1]} x2={pts[b][0]} y2={pts[b][1]} />
-      ))}
-      {pts.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r="2" fill={stroke} stroke="none" />
-      ))}
-    </svg>
-  );
-};
-
-const WireTerrain = ({ size = 260, stroke = 'var(--oxblood)' }) => {
-  const cols = 20, rows = 14;
-  const cellW = 22, cellH = 14;
-  const offX = -(cols * cellW) / 2;
-  const offY = 20;
-  const shear = 0.55;
-  const amp = 52;
-  const h = (i, j) => {
-    const s = Math.sin(i * 0.9 + j * 1.7) * 43758.5453;
-    const n1 = s - Math.floor(s);
-    const s2 = Math.sin(i * 0.31 - j * 0.47) * 12543.21;
-    const n2 = s2 - Math.floor(s2);
-    const cx = cols / 2, cy = rows / 2;
-    const d = Math.hypot((i - cx) / cx, (j - cy) / cy);
-    const ridge = Math.max(0, 1 - d) * 0.9;
-    return (n1 * 0.55 + n2 * 0.45) * 0.45 + ridge * 0.55;
-  };
-  const project = (i, j) => {
-    const px = offX + i * cellW + j * (cellH * shear);
-    const py = offY + j * cellH * 0.55 - h(i, j) * amp;
-    return [px, py];
-  };
-  const rowPaths = [];
-  for (let j = 0; j < rows; j++) {
-    let d = '';
-    for (let i = 0; i < cols; i++) {
-      const [x, y] = project(i, j);
-      d += (i === 0 ? 'M ' : 'L ') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
-    }
-    const t = j / (rows - 1);
-    const op = 0.35 + (1 - Math.abs(t - 0.5) * 2) * 0.55;
-    rowPaths.push(<path key={'r'+j} d={d} opacity={op.toFixed(2)} />);
-  }
-  const colPaths = [];
-  for (let i = 0; i < cols; i++) {
-    let d = '';
-    for (let j = 0; j < rows; j++) {
-      const [x, y] = project(i, j);
-      d += (j === 0 ? 'M ' : 'L ') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
-    }
-    const t = i / (cols - 1);
-    const op = 0.3 + (1 - Math.abs(t - 0.5) * 2) * 0.5;
-    colPaths.push(<path key={'c'+i} d={d} opacity={op.toFixed(2)} />);
-  }
-  const peaks = [];
-  for (let j = 0; j < rows; j++) {
-    for (let i = 0; i < cols; i++) {
-      if (h(i, j) > 0.82) {
-        const [x, y] = project(i, j);
-        peaks.push(<circle key={'p'+i+'_'+j} cx={x} cy={y} r="1.6" fill={stroke} stroke="none"/>);
-      }
-    }
-  }
-  return (
-    <svg viewBox="-160 -120 320 240" width={size} height={size * 0.75} fill="none" stroke={stroke} strokeWidth="0.7">
-      <rect x="-150" y="-110" width="300" height="220" stroke={stroke} strokeWidth="0.6" opacity="0.25"/>
-      <g stroke={stroke} strokeWidth="0.9">
-        <path d="M -150 -100 L -150 -110 L -140 -110"/>
-        <path d="M 140 -110 L 150 -110 L 150 -100"/>
-        <path d="M -150 100 L -150 110 L -140 110"/>
-        <path d="M 140 110 L 150 110 L 150 100"/>
-      </g>
-      <g>{rowPaths}</g>
-      <g>{colPaths}</g>
-      {peaks}
-      <g stroke={stroke} opacity="0.55">
-        <line x1="-150" y1="90" x2="-140" y2="90"/>
-        <line x1="-150" y1="50" x2="-140" y2="50"/>
-        <line x1="-150" y1="10" x2="-140" y2="10"/>
-        <line x1="-150" y1="-30" x2="-140" y2="-30"/>
-        <line x1="140" y1="90" x2="150" y2="90"/>
-        <line x1="140" y1="50" x2="150" y2="50"/>
-      </g>
-      <g stroke="none" fill={stroke} fontFamily="monospace" fontSize="7" letterSpacing="2" opacity="0.75">
-        <text x="-150" y="-96">Z+</text>
-        <text x="132" y="-96">ALT</text>
-        <text x="-150" y="106">TERRAIN_04</text>
-        <text x="86" y="106">H 0.82</text>
-      </g>
-    </svg>
-  );
-};
-
-const Sigil = ({ size = 100, stroke = 'var(--oxblood)' }) => (
-  <svg viewBox="-60 -60 120 120" width={size} height={size} fill="none" stroke={stroke} strokeWidth="0.8">
-    <circle cx="0" cy="0" r="55" opacity="0.8"/>
-    <circle cx="0" cy="0" r="42" opacity="0.5"/>
-    <polygon points="0,-40 35,20 -35,20" />
-    <polygon points="0,40 35,-20 -35,-20" />
-    <circle cx="0" cy="0" r="12" />
-    <circle cx="0" cy="0" r="2" fill={stroke} stroke="none"/>
-    {Array.from({length:12}).map((_,i)=>{
-      const a = (i/12)*Math.PI*2;
-      return <circle key={i} cx={Math.cos(a)*55} cy={Math.sin(a)*55} r="1.2" fill={stroke} stroke="none"/>;
-    })}
-  </svg>
-);
-
-const Crosshair = ({ size = 22, stroke = 'var(--oxblood)' }) => (
-  <svg viewBox="-12 -12 24 24" width={size} height={size} fill="none" stroke={stroke} strokeWidth="1">
-    <line x1="-10" y1="0" x2="-3" y2="0"/>
-    <line x1="3" y1="0" x2="10" y2="0"/>
-    <line x1="0" y1="-10" x2="0" y2="-3"/>
-    <line x1="0" y1="3" x2="0" y2="10"/>
-    <circle cx="0" cy="0" r="1.5" fill={stroke} stroke="none"/>
-  </svg>
-);
-
-const Wave909 = ({ size = 160, stroke = 'var(--oxblood)' }) => {
-  const W = 320, H = 140;
-  const N = 260;
-  const cx = 0, cy = 0;
-  const samples = [];
-  for (let i = 0; i < N; i++) {
-    const t = i / (N - 1);
-    const env = Math.exp(-t * 3.2);
-    const click = Math.exp(-t * 90) * 0.8;
-    const freq = 22 - t * 16;
-    const body = Math.sin(t * freq * Math.PI * 2 - 0.2) * env;
-    const sub  = Math.sin(t * (freq * 0.5) * Math.PI * 2) * env * 0.35;
-    const y = (body + sub + click) * 0.85;
-    samples.push(y);
-  }
-  const toPath = (flip = 1) => {
-    let d = '';
-    for (let i = 0; i < N; i++) {
-      const x = -W / 2 + (i / (N - 1)) * W;
-      const y = cy + samples[i] * (H / 2) * flip;
-      d += (i === 0 ? 'M ' : 'L ') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
-    }
-    return d;
-  };
-  const bars = [];
-  const BAR_N = 52;
-  for (let i = 0; i < BAR_N; i++) {
-    const t = i / (BAR_N - 1);
-    const idx = Math.floor(t * (N - 1));
-    const amp = Math.abs(samples[idx]);
-    const x = -W / 2 + t * W;
-    const half = amp * (H / 2) * 0.95;
-    const bright = t < 0.08 ? 1 : 0.6;
-    bars.push(
-      <line key={i} x1={x} y1={-half} x2={x} y2={half}
-        stroke={stroke} strokeWidth="1" opacity={bright}/>
-    );
-  }
-  return (
-    <svg viewBox={`${-W/2 - 10} ${-H/2 - 22} ${W + 20} ${H + 44}`}
-         width={size * 2} height={size}
-         fill="none" stroke={stroke} strokeWidth="0.8">
-      <g strokeWidth="0.8">
-        <path d={`M ${-W/2 - 4} ${-H/2 - 8} L ${-W/2 - 4} ${-H/2 - 14} L ${-W/2 + 6} ${-H/2 - 14}`}/>
-        <path d={`M ${W/2 - 6} ${-H/2 - 14} L ${W/2 + 4} ${-H/2 - 14} L ${W/2 + 4} ${-H/2 - 8}`}/>
-        <path d={`M ${-W/2 - 4} ${H/2 + 8} L ${-W/2 - 4} ${H/2 + 14} L ${-W/2 + 6} ${H/2 + 14}`}/>
-        <path d={`M ${W/2 - 6} ${H/2 + 14} L ${W/2 + 4} ${H/2 + 14} L ${W/2 + 4} ${H/2 + 8}`}/>
-      </g>
-      <line x1={-W/2} y1="0" x2={W/2} y2="0" strokeDasharray="2 4" opacity="0.35"/>
-      <g opacity="0.7">{bars}</g>
-      <path d={toPath(1)} strokeWidth="1.1"/>
-      <path d={toPath(-1)} strokeWidth="1.1" opacity="0.85"/>
-      <g stroke={stroke} strokeWidth="0.9">
-        <line x1={-W/2 + 4} y1={-H/2 - 2} x2={-W/2 + 4} y2={H/2 + 2} strokeDasharray="1 3"/>
-      </g>
-      <g stroke="none" fill={stroke} fontFamily="monospace" fontSize="8" letterSpacing="2" opacity="0.85">
-        <text x={-W/2} y={-H/2 - 4}>909 / KICK</text>
-        <text x={W/2 - 60} y={-H/2 - 4}>55HZ ↓ 32HZ</text>
-        <text x={-W/2} y={H/2 + 12}>TRANSIENT</text>
-        <text x={W/2 - 44} y={H/2 + 12}>DECAY 820MS</text>
-      </g>
-    </svg>
-  );
-};
-
-/* Hexagon-based geometric mark — used as default release cover icon */
-const HexMark = ({ size = 60, stroke = 'var(--oxblood)' }) => {
-  const R = 50;
-  const hex = (r) => {
-    const pts = [];
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
-      pts.push([Math.cos(a) * r, Math.sin(a) * r]);
-    }
-    return pts;
-  };
-  const outer = hex(R);
-  const inner = hex(R * 0.55);
-  const toPoly = (pts) => pts.map(p => p.join(',')).join(' ');
-  return (
-    <svg viewBox="-60 -60 120 120" width={size} height={size} fill="none" stroke={stroke} strokeWidth="0.9">
-      <polygon points={toPoly(outer)} strokeWidth="1.1"/>
-      <polygon points={toPoly(hex(R * 0.78))} opacity="0.55"/>
-      <polygon points={toPoly(inner)} strokeWidth="1"/>
-      {outer.map((p, i) => (
-        <line key={'s'+i} x1="0" y1="0" x2={p[0]} y2={p[1]} opacity="0.45"/>
-      ))}
-      {outer.map((p, i) => {
-        const q = inner[(i + 1) % 6];
-        return <line key={'z'+i} x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} opacity="0.6"/>;
-      })}
-      <circle cx="0" cy="0" r="3" fill={stroke} stroke="none"/>
-      {outer.map((p, i) => (
-        <circle key={'d'+i} cx={p[0]} cy={p[1]} r="1.6" fill={stroke} stroke="none"/>
-      ))}
-    </svg>
-  );
-};
-
-/* Vertical AGOE totem — stacked letterform sigil, replaces About-page sigil */
-const AgoeTotem = ({ size = 72, stroke = 'var(--oxblood)' }) => (
-  <svg viewBox="-30 -10 60 200" width={size * 0.6} height={size * 2}
-       fill="none" stroke={stroke} strokeWidth="2.4"
-       strokeLinecap="round" strokeLinejoin="round">
-    <g>
-      <path d="M -14 36 L 0 0 L 14 36" />
-      <line x1="-8" y1="22" x2="8" y2="22" />
-    </g>
-    <g transform="translate(0 62)">
-      <path d="M 12 -14
-               C 4 -22, -14 -20, -16 -4
-               C -18 12, 0 18, 12 12
-               L 12 0 L 4 0" />
-    </g>
-    <g transform="translate(0 110)">
-      <path d="M -14 0
-               C -14 -14, 14 -14, 14 0
-               C 14 14, -14 14, -14 0 Z" />
-    </g>
-    <g transform="translate(0 158)">
-      <line x1="-12" y1="-14" x2="-12" y2="14" />
-      <line x1="-12" y1="-14" x2="12" y2="-14" />
-      <line x1="-12" y1="0"   x2="8"  y2="0"  />
-      <line x1="-12" y1="14"  x2="12" y2="14" />
-    </g>
-  </svg>
-);
-
-/* ================ VIEWS ================ */
-const { useState, useEffect, useMemo } = React;
-
-const NavBtn = ({ label, onClick, active }) => (
-  <button className={"nav-item" + (active ? " active" : "")} onClick={onClick}>
-    <span>{label}</span>
-    <span className="plus"/>
-  </button>
-);
-
-const MiniNav = ({ navigate, active }) => (
-  <div style={{display:'flex', flexDirection:'column', gap: 0, minWidth: 240, marginTop: 8}}>
-    <button className="nav-item" onClick={() => navigate('home')}>
-      <span>← HOME</span>
-      <span className="plus"/>
-    </button>
-    {[
-      ['SOCIALS','socials'],
-      ['ALL MUSIC','content'],
-      ['ABOUT','about'],
-      ['UPCOMING PROJECTS','projects'],
-    ].map(([l,k]) => (
-      <NavBtn key={k} label={l} onClick={() => navigate(k)} active={active===k}/>
-    ))}
-  </div>
-);
-
-const SubHeader = ({ idx, label, title, navigate, active }) => (
-  <>
-    <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap: 40, flexWrap:'wrap'}}>
-      <div>
-        <div className="eyebrow">
-          <b>{idx}</b>
-          <span className="sep"/>
-          <span>{label}</span>
-          <span className="sep"/>
-          <span>IDOL INTERFACE SYSTEM</span>
-        </div>
-        <h1>{title}</h1>
-      </div>
-      <MiniNav navigate={navigate} active={active}/>
-    </div>
-    <div className="hairline" style={{margin:'30px 0 0'}}></div>
-  </>
-);
-
-const Enrollment = () => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [touched, setTouched] = useState(false);
-  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!valid) { setTouched(true); return; }
-    setSubmitted(true);
-  };
-
-  return (
-    <div className="enroll">
-      <div>
-        <div className="caption" style={{marginBottom: 12}}>
-          <span className="num">//</span>SIGNAL INTAKE / ENROLLMENT
-        </div>
-        <div className="e-head">
-          CONSECRATE <b>YOUR FREQUENCY</b>
-        </div>
-        <div className="e-sub">
-          Leave an address. Dispatches from the shrine arrive there —<br/>
-          ritual dates, unreleased stems, broadcast shifts.<br/>
-          <span style={{color:'var(--oxblood)'}}>// A MAILING LIST, TUNED TO RITUAL.</span>
-        </div>
-      </div>
-
-      <div>
-        {!submitted ? (
-          <form onSubmit={onSubmit} noValidate>
-            <input
-              type="email"
-              placeholder="NAME@FREQUENCY.ORG"
-              value={email}
-              onChange={e => { setEmail(e.target.value); setTouched(false); }}
-              aria-label="Email address"
-            />
-            <button type="submit" className="e-submit">
-              <span>INSCRIBE</span>
-              <span>→</span>
-            </button>
-          </form>
-        ) : (
-          <div className="e-ok">
-            <span style={{width:8,height:8,background:'var(--oxblood-bright)',display:'inline-block',boxShadow:'0 0 8px var(--oxblood-bright)'}}/>
-            SIGNAL RECEIVED — <span style={{color:'var(--ink)'}}>{email}</span> — WATCHING BACK.
-          </div>
-        )}
-        <div className="e-terms">
-          {touched && !valid
-            ? <span style={{color:'var(--oxblood-bright)'}}>// INVALID FREQUENCY — PLEASE RE-TUNE</span>
-            : <>// DISPATCH ~1× PER CYCLE · <b>UNSUBSCRIBE</b> IN ANY TRANSMISSION · NEVER SOLD</>}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const HomeView = ({ navigate, active }) => {
-  const [time, setTime] = useState(new Date());
-  useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const ts = time.toISOString().slice(11, 19);
-
-  return (
-    <div className="page" data-screen-label="01 Home">
-      <div className="topbar">
-        <div className="left">
-          <span className="mono caps">AGOE.IDOL</span>
-          <span className="mono" style={{opacity:.4}}>//</span>
-          <span className="mono caps">INDEPENDENT ALT IDOL  //  EXPERIMENTAL POP ARTIST</span>
-        </div>
-        <div className="center">
-          <span className="dot"></span>
-          <span className="mono live">SIGNAL LIVE</span>
-        </div>
-        <div className="right">
-          <span className="mono">SYS/IDOL_5G v0.1.23</span>
-          <span className="mono" style={{opacity:.4}}>//</span>
-          <span className="mono">HST 12:49:22</span>
-        </div>
-      </div>
-
-      <div className="rail left mono"><span>SYS/06</span><span>MOD/03</span><span>IDX/01</span></div>
-      <div className="rail right mono"><span>IDX/01</span><span>MOD/03</span><span>SYS/06</span></div>
-
-      <div className="hero">
-        <div className="hero-left">
-          <div>
-            <div style={{display:'flex', alignItems:'center', gap:14, marginTop: 10}}>
-              <Crosshair size={18}/>
-              <span className="caption"><span className="num">01</span>IDENTITY_CORE / BOOT SEQUENCE OK</span>
-            </div>
-
-            <div className="wordmark" style={{marginTop: 18}}>
-              AGOE
-            </div>
-            <div style={{
-              fontFamily:'Space Grotesk', fontWeight: 400,
-              fontSize: 'clamp(22px, 2.4vw, 42px)',
-              letterSpacing: '.32em', textTransform:'uppercase',
-              color: 'var(--ink)',
-              marginTop: 4, paddingLeft: 6,
-              display:'flex', alignItems:'center', gap: 14
-            }}>
-              <span style={{color:'var(--oxblood)'}}>/</span>
-              <span>THE IDOL</span>
-            </div>
-
-            <div className="tagline">EXPERIMENTAL POP ARTIST</div>
-
-            <div className="sub-tags">
-              RITUAL <span className="sep">/</span> FREQUENCY <span className="sep">/</span> DIVINE MACHINERY
-              <br/>
-              SOUND AS SIGNAL <span className="sep">/</span> THE IDOL AS INTERFACE
-            </div>
-
-            <div style={{marginTop: 46, display:'flex', flexDirection:'column', gap: 0, maxWidth: 280}}>
-              <NavBtn label="SOCIALS" onClick={() => navigate('socials')} active={active==='socials'}/>
-              <NavBtn label="ALL MUSIC" onClick={() => navigate('content')} active={active==='content'}/>
-            </div>
-          </div>
-
-          <div style={{marginTop: 50}}>
-            <div className="hairline" style={{margin:'18px 0 14px'}}></div>
-            <div className="telemetry" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap: 20, maxWidth: 520}}>
-              <div>
-                <span className="k">&gt; LOCATION:</span> HONOLULU / UNDERGROUND<br/>
-                <span className="k">&gt; PROTOCOL:</span> NEW ALBUM - Un-Uncommon +<br/>
-                <span className="k">&gt; NEXT RITUAL:</span> ??.??.2026 — HONOLULU
-              </div>
-              <div>
-                <span className="k">&gt; VOICE RANGE:</span> 2.3 OCT / F3-A5<br/>
-                <span className="k">&gt; SIGNAL DEPTH:</span> <b style={{color:'var(--oxblood-bright)'}}>0.982</b><br/>
-                <span className="k">&gt; STATUS:</span> FEEDBACK ON
-              </div>
-            </div>
-          </div>
-          <div style={{marginTop: 28, width: '100%', maxWidth: 520, opacity: .95}}>
-            <Wave909 size={110}/>
-          </div>
-        </div>
-
-        <div className="hero-right">
-          <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
-            <div>
-              <div className="caption"><span className="num">02</span>NAVIGATION</div>
-              <div style={{marginTop: 10, display:'flex', flexDirection:'column'}}>
-                <NavBtn label="ABOUT" onClick={() => navigate('about')} active={active==='about'}/>
-                <NavBtn label="UPCOMING PROJECTS" onClick={() => navigate('projects')} active={active==='projects'}/>
-              </div>
-            </div>
-            <div style={{textAlign:'right'}}>
-              <div className="caption mono"><span className="num">03</span>STREAM</div>
-              <div className="mono" style={{fontSize:10, color:'var(--ink-dim)', marginTop: 8, letterSpacing:'.18em'}}>
-                // NOW PLAYING<br/>
-                <span style={{color:'var(--ink)'}}>"STATIC PRAYER"</span><br/>
-                <span style={{color:'var(--oxblood)'}}>━━━━━━━━━</span><span style={{opacity:.3}}>━━━━━━</span><br/>
-                02:14 / 04:08
-              </div>
-            </div>
-          </div>
-
-          <div className="wire-stage">
-            <div style={{position:'absolute', left: '5%', top: '6%'}}>
-              <WireSphere size={180}/>
-            </div>
-            <div style={{position:'absolute', right: '4%', top: '10%'}}>
-              <WireIcosa size={190}/>
-            </div>
-            <div style={{position:'absolute', left: '26%', bottom: '2%'}}>
-              <WireTerrain size={260}/>
-            </div>
-            <div style={{position:'absolute', left:'48%', top:'42%', display:'flex', gap:6, alignItems:'center'}}>
-              <Crosshair size={14}/>
-              <span className="mono" style={{fontSize:9, color:'var(--ink-ghost)', letterSpacing:'.2em'}}>NODE_04</span>
-            </div>
-            <div style={{position:'absolute', right:'40%', top:'18%', display:'flex', gap:6, alignItems:'center'}}>
-              <Crosshair size={14}/>
-              <span className="mono" style={{fontSize:9, color:'var(--ink-ghost)', letterSpacing:'.2em'}}>VERT_17</span>
-            </div>
-          </div>
-
-          <div className="viewport">
-            <span className="cnr tr"></span>
-            <span className="cnr bl"></span>
-            <h3>/ SIGNAL INTEGRITY — CH.06</h3>
-            <div className="line">NOISE</div>
-            <div className="line">ACT · LISTEN · DESIRE</div>
-            <div className="bar">
-              {[1,1,1,1,1,0,1,1,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1].map((v,i)=> (
-                <i key={i} className={v?'on':''}/>
-              ))}
-            </div>
-            <div style={{display:'flex', justifyContent:'space-between', marginTop: 10}}>
-              <span className="mono" style={{fontSize:9, color:'var(--ink-dim)', letterSpacing:'.2em'}}>// CH.06 // GAIN -3.2DB</span>
-              <span className="mono" style={{fontSize:9, color:'var(--oxblood-bright)', letterSpacing:'.2em'}}>◉ REC</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Enrollment/>
-
-      <div className="ticker">
-        <div className="ticker-track">
-          {Array.from({length: 2}).map((_, i) => (
-            <React.Fragment key={i}>
-              <span>NEW SINGLE <b>"STATIC PRAYER"</b> — OUT NOW <span className="mark">◆</span></span>
-              <span>LIVE RITUAL — HONOLULU — XX.XX.26 <span className="mark">◆</span></span>
-              <span>UN-UNCOMMON + / MAY 22 2026 <span className="mark">◆</span></span>
-              <span>SIGNAL DEPTH 0.982 — IDOL STATE LIVE <span className="mark">◆</span></span>
-              <span>ENTER THE FEED <span className="mark">◆</span></span>
-              <span>WATCHING BACK <span className="mark">◆</span></span>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-
-      <span className="frame-corner fc-tl"/>
-      <span className="frame-corner fc-tr"/>
-      <span className="frame-corner fc-bl"/>
-      <span className="frame-corner fc-br"/>
-    </div>
-  );
-};
-
-const SOCIALS = [
-  { name:'INSTAGRAM', handle:'@agoetheidol', followers:'184K', posts:'0.412', cta:'ENTER FEED' },
-  { name:'YOUTUBE', handle:'@agoetheidol', followers:'62.3K', posts:'1.8K', cta:'OPEN STREAM' },
-  { name:'TIKTOK', handle:'@agoetheidol', followers:'311K', posts:'0.089', cta:'BEGIN RITUAL' },
-  { name:'X', handle:'@agoetheidol', followers:'44.1K', posts:'027', cta:'WATCH SIGNAL' },
-  { name:'BANDCAMP', handle:'@agoetheidol', followers:'28.7K', posts:'041', cta:'TUNE IN' },
-  { name:'DISCORD', handle:'/theshrine', followers:'9.2K', posts:'LIVE', cta:'JOIN THE SHRINE' },
-];
-const SocialsView = ({ navigate, active }) => (
-  <div className="subview page" data-screen-label="02 Socials">
-    <SubHeader idx="02" label="SOCIALS // NODES" title="TRANSMIT" navigate={navigate} active={active}/>
-    <div className="socials-grid">
-      {SOCIALS.map((s, i) => (
-        <div className="social-card" key={s.name}>
-          <div className="sc-num">0{i+1} / 0{SOCIALS.length}</div>
-          <div className="sc-name">{s.name}</div>
-          <div className="sc-handle">{s.handle}</div>
-          <div className="sc-stats">
-            <div><b>{s.followers}</b>FOLLOWERS</div>
-            <div><b>{s.posts}</b>{s.posts === 'LIVE' ? 'STATUS' : 'SIGNAL'}</div>
-          </div>
-          <div className="sc-cta">{s.cta} →</div>
-        </div>
-      ))}
-    </div>
-
-    <div className="rule">
-      <div className="l"/>
-      <div className="t">// END TRANSMISSION INDEX</div>
-      <div className="r"/>
-    </div>
-
-    <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: 40, marginTop: 20}}>
-      <div className="telemetry">
-        <div className="caption" style={{marginBottom:10}}><span className="num">A</span>FOLLOW DIRECT</div>
-        Type <span style={{color:'var(--oxblood)'}}>@agoetheidol</span> into any feed. The shrine opens where you're standing.
-      </div>
-      <div className="telemetry">
-        <div className="caption" style={{marginBottom:10}}><span className="num">B</span>NEWSLETTER / SIGNAL</div>
-        Monthly dispatch, ritual schedule, unreleased stems. <span style={{color:'var(--oxblood-bright)'}}>SUBSCRIBE →</span>
-      </div>
-      <div className="telemetry">
-        <div className="caption" style={{marginBottom:10}}><span className="num">C</span>PRESS / BOOKING</div>
-        <span style={{color:'var(--ink)'}}>im@connoi.se</span><br/>
-        All requests routed through the shrine.
-      </div>
-    </div>
-  </div>
-);
-
-const RELEASES = [
-  { n:'001', title:'AGOE COLLECTION, VOL. 1', kind:'ALBUM / COMPILATION', date:'2025', dur:'52:08', tag:'LATEST' },
-  { n:'002', title:'NOTHING HAPPENS IN APRIL', kind:'ALBUM / LP', date:'2024', dur:'38:21', tag:'LP' },
-  { n:'003', title:'SUMMER THRENODY', kind:'SINGLE', date:'2024', dur:'04:12', tag:'' },
-  { n:'004', title:'MICROMASHII VOL. 3', kind:'REMIX / COMPILATION', date:'2024', dur:'24:46', tag:'REMIX' },
-  { n:'005', title:'UN-UNCOMMON', kind:'ALBUM / LP', date:'2023', dur:'34:55', tag:'' },
-  { n:'006', title:'LONELY SOUL', kind:'SINGLE', date:'2022', dur:'03:48', tag:'DEBUT' },
-];
-
-const ReleaseRow = ({ r }) => {
-  const [hover, setHover] = useState(false);
-  return (
-    <div className="release-row" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}>
-      <div className="rr-num">{r.n}</div>
-      <div className="rr-cover">
-        <div style={{
-          position:'absolute', inset: 0,
-          background: hover
-            ? 'repeating-linear-gradient(45deg, rgba(183,29,29,.35) 0 2px, transparent 2px 6px)'
-            : 'repeating-linear-gradient(45deg, rgba(128,21,21,.2) 0 2px, transparent 2px 6px)',
-          transition: 'background .2s'
-        }}/>
-        <div style={{position:'absolute', inset:8, border:'1px solid var(--hairline-strong)'}}/>
-        <div style={{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)'}}>
-          <HexMark size={60}/>
-        </div>
-      </div>
-      <div className="rr-title">
-        {r.title}
-        <small>{r.kind}</small>
-      </div>
-      <div className="rr-meta"><b>{r.date}</b>RELEASED</div>
-      <div className="rr-meta"><b>{r.dur}</b>RUNTIME {r.tag && <span style={{color:'var(--oxblood-bright)'}}>// {r.tag}</span>}</div>
-      <div className="rr-play">
-        <span>PLAY</span>
-        <span className="arrow"/>
-      </div>
-    </div>
-  );
-};
-
-const ContentView = ({ navigate, active }) => {
-  const [filter, setFilter] = useState('ALL');
-  const filtered = useMemo(() => {
-    if (filter === 'ALL') return RELEASES;
-    return RELEASES.filter(r => r.kind.includes(filter === 'ALBUMS' ? 'ALBUM' : filter === 'SINGLES' ? 'SINGLE' : filter));
-  }, [filter]);
-
-  return (
-    <div className="subview page" data-screen-label="03 New Content">
-      <SubHeader idx="03" label="NEW CONTENT // RELEASE INDEX" title="TRANSMISSIONS" navigate={navigate} active={active}/>
-
-      <div style={{display:'flex', gap: 30, marginTop: 30, alignItems:'center', flexWrap:'wrap'}}>
-        <span className="caption"><span className="num">//</span>FILTER</span>
-        {['ALL','SINGLES','ALBUMS','REMIX'].map(f => (
-          <button key={f}
-            onClick={()=>setFilter(f)}
-            className="caps"
-            style={{
-              background:'transparent',
-              border:'none',
-              color: filter===f ? 'var(--oxblood-bright)' : 'var(--ink-dim)',
-              fontFamily:'Space Grotesk', fontSize: 12, letterSpacing:'.22em',
-              fontWeight: filter===f ? 500 : 400,
-              cursor:'pointer',
-              borderBottom: '1px solid',
-              borderColor: filter===f ? 'var(--oxblood-bright)' : 'transparent',
-              paddingBottom: 4
-            }}>{f}</button>
-        ))}
-        <span style={{flex:1}}/>
-        <span className="caption">{filtered.length} ENTRIES / {RELEASES.length} TOTAL</span>
-      </div>
-
-      <div className="releases">
-        {filtered.map(r => <ReleaseRow key={r.n} r={r}/>)}
-      </div>
-
-      <div className="rule">
-        <div className="l"/>
-        <div className="t">// END INDEX</div>
-        <div className="r"/>
-      </div>
-    </div>
-  );
-};
-
-const AboutView = ({ navigate, active }) => (
-  <div className="subview page" data-screen-label="04 About">
-    <SubHeader idx="04" label="ABOUT // IDOL PROTOCOL" title="FEEDBACK" navigate={navigate} active={active}/>
-
-    <div className="about-grid">
-      <div>
-        <p style={{fontSize:22, lineHeight:1.5, color:'var(--ink)', letterSpacing:'.01em'}}>
-          Alt idol, experimental pop, digital art
-          <br/><br/>
-          <span style={{color:'var(--ink-dim)', fontSize:17}}>A conduit for the Aether.</span>
-        </p>
-
-        <div className="rule">
-          <div className="l"/>
-          <div className="t">// DOCTRINE</div>
-          <div className="r"/>
-        </div>
-
-        <p>
-          Idol is an interface for devotion. Formless unconsciousness pervades culture and society as The Aether.
-          Agoe is a vessel for what is denied on the surface. Ritual performance is the tip of the spear that
-          disrupts the smooth surface.
-        </p>
-        <p>
-          Releases are a ritual lithography. Every performance is a rite. The audience is feedback. Noise is
-          form to The Aether.
-        </p>
-        <p>
-          Agoe resides in Honolulu, HI.
-        </p>
-      </div>
-
-      <div>
-        <div className="manifest">
-          <div className="m-head">
-            <span>// IDOL MANIFEST / v0.1.23</span>
-            <span style={{color:'var(--oxblood-bright)'}}>● LIVE</span>
-          </div>
-          <div className="row"><span>IDENTITY</span><span>AGOE THE IDOL</span></div>
-          <div className="row"><span>CLASS</span><span>ALT IDOL/EXPERIMENTAL POP</span></div>
-          <div className="row"><span>ORIGIN</span><span>HONOLULU</span></div>
-          <div className="row"><span>ACTIVE</span><span>2021 — PRESENT</span></div>
-          <div className="row"><span>PROTOCOL</span><span>NEW ALBUM - UNUNCOMMON +</span></div>
-          <div className="row"><span>LABEL</span><span>CONNOI.SE</span></div>
-          <div className="row"><span>MGMT</span><span>CONNOI.SE</span></div>
-          <div className="row"><span>SIGNAL DEPTH</span><span style={{color:'var(--oxblood-bright)'}}>0.982</span></div>
-          <div className="row"><span>VOICE RANGE</span><span>F3 → A5</span></div>
-          <div className="row" style={{borderBottom:'none'}}><span>STATUS</span><span style={{color:'var(--oxblood-bright)'}}>WATCHING BACK</span></div>
-        </div>
-
-        <div style={{marginTop: 24, display:'flex', gap: 14, alignItems:'flex-start'}}>
-          <AgoeTotem size={72}/>
-          <div className="telemetry" style={{paddingTop: 8}}>
-            <div className="caption" style={{marginBottom: 6}}>/ SIGIL_003</div>
-            Worn on the inside of the left wrist.<br/>
-            Activates the Aether.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const PROJECTS = [
-  { n:'P01', title:'UN-UNCOMMON +', type:'REMAKE', year:'MAY 22 2026', collab:'BANDCAMP' },
-  { n:'P02', title:'WHISPERING STAR', type:'FULL LENGTH ALBUM', year:'2026', collab:'NA' },
-  { n:'P03', title:'IF/IDOL', type:'FULL LENGTH ALBUM / TYPE', year:'2026-27', collab:'NA' },
-];
-const ProjectsView = ({ navigate, active }) => (
-  <div className="subview page" data-screen-label="05 Projects">
-    <SubHeader idx="05" label="PROJECTS // RITUAL ARCHIVE" title="EVIDENCE" navigate={navigate} active={active}/>
-
-    <div className="projects-stack">
-      {PROJECTS.map(p => (
-        <div className="project-row" key={p.n}>
-          <div className="pr-num">{p.n}</div>
-          <div className="pr-title">{p.title}</div>
-          <div className="pr-type"><b>{p.type.split(' / ')[0]}</b>{p.type.includes('/') ? p.type.split(' / ')[1] : 'TYPE'}</div>
-          <div className="pr-year">{p.year}</div>
-          <div className="pr-collab" style={{textAlign:'right'}}>
-            {p.collab}
-            <span style={{color:'var(--oxblood)', marginLeft: 14}}>→</span>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div className="rule">
-      <div className="l"/>
-      <div className="t">// ARCHIVE v0.1.23 — 03 ENTRIES</div>
-      <div className="r"/>
-    </div>
-
-    <div style={{display:'grid', gridTemplateColumns:'1.6fr 1fr', gap: 60, marginTop: 30, alignItems:'center'}}>
-      <div className="telemetry">
-        <div className="caption" style={{marginBottom: 12}}>/ COMMISSION / COLLABORATION</div>
-        Agoe accepts frequent collaboration<br/>
-        Send a signal to <span style={{color:'var(--oxblood-bright)'}}>im@connoi.se</span>
-      </div>
-      <div style={{display:'flex', justifyContent:'flex-end'}}>
-        <WireIcosa size={180}/>
-      </div>
-    </div>
-  </div>
-);
-
-/* ================ APP SHELL ================ */
-function App(){
-  const [view, setView] = useState(() => {
-    try { return localStorage.getItem('agoe.view') || 'home'; } catch(e) { return 'home'; }
-  });
-
-  useEffect(() => {
-    try { localStorage.setItem('agoe.view', view); } catch(e){}
-    window.scrollTo({top:0, behavior:'instant'});
-  }, [view]);
-
-  const navigate = (next) => {
-    if (next === view) return;
-    const flash = document.getElementById('flash');
-    flash.classList.remove('go');
-    void flash.offsetWidth;
-    flash.classList.add('go');
-    setTimeout(() => setView(next), 80);
-  };
-
-  let View;
-  switch(view){
-    case 'socials':  View = <SocialsView navigate={navigate} active={view}/>; break;
-    case 'content':  View = <ContentView navigate={navigate} active={view}/>; break;
-    case 'about':    View = <AboutView navigate={navigate} active={view}/>; break;
-    case 'projects': View = <ProjectsView navigate={navigate} active={view}/>; break;
-    default:         View = <HomeView navigate={navigate} active={view}/>;
-  }
-
-  return <div className="hud">{View}</div>;
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
+<script type="text/babel" src="src/wireframes.jsx"></script>
+<script type="text/babel" src="src/views.jsx"></script>
+<script type="text/babel" src="src/app.jsx"></script>
 </body>
 </html>
