@@ -271,13 +271,13 @@ const SocialsView = ({ navigate, active }) =>
 
 /* ---- New Content ---- */
 const RELEASES = [
-{ n: '001', title: 'UN-UNCOMMON +', kind: 'ALBUM / LP', date: '2026', dur: '42:18', tag: 'LATEST', cover: 'assets/covers/un-uncommon.jpg' },
-{ n: '002', title: 'BURNING THE TREE', kind: 'EP', date: '2025', dur: '18:24', tag: 'EP', cover: 'assets/covers/burning-the-tree.jpg' },
-{ n: '003', title: 'AGOE COLLECTION, VOL. 1', kind: 'ALBUM / COMPILATION', date: '2025', dur: '52:08', tag: 'COMPILATION', cover: 'assets/covers/agoe-collection-vol1.jpg' },
-{ n: '004', title: 'NOTHING HAPPENS IN APRIL', kind: 'ALBUM / LP', date: '2024', dur: '38:21', tag: 'LP', cover: 'assets/covers/nothing-happens-in-april.jpg' },
+{ n: '001', title: 'UN-UNCOMMON +', kind: 'ALBUM / LP', date: '2026', dur: '35:49', tag: 'LATEST', cover: 'assets/covers/un-uncommon.jpg', url: 'https://distrokid.com/hyperfollow/agoetheidol/un-uncommon-' },
+{ n: '002', title: 'BURNING THE TREE', kind: 'EP', date: '2025', dur: '18:24', tag: 'EP', cover: 'assets/covers/burning-the-tree.jpg', url: 'https://agoetheidol.bandcamp.com/album/burning-the-tree-2' },
+{ n: '003', title: 'AGOE COLLECTION, VOL. 1', kind: 'ALBUM / COMPILATION', date: '2025', dur: '52:08', tag: 'COMPILATION', cover: 'assets/covers/agoe-collection-vol1.jpg', url: 'https://agoetheidol.bandcamp.com/album/agoe-collection-vol-1' },
+{ n: '004', title: 'NOTHING HAPPENS IN APRIL', kind: 'ALBUM / LP', date: '2024', dur: '38:21', tag: 'LP', cover: 'assets/covers/nothing-happens-in-april.jpg', url: 'https://agoetheidol.bandcamp.com/album/nothing-happens-in-april' },
 { n: '005', title: 'SUMMER THRENODY', kind: 'SINGLE', date: '2024', dur: '04:12', tag: '' },
 { n: '006', title: 'MICROMASHII VOL. 3', kind: 'REMIX / COMPILATION', date: '2024', dur: '24:46', tag: 'REMIX' },
-{ n: '007', title: 'UN-UNCOMMON', kind: 'ALBUM / LP', date: '2023', dur: '34:55', tag: '', cover: 'assets/covers/un-uncommon.jpg' },
+{ n: '007', title: 'UN-UNCOMMON', kind: 'ALBUM / LP', date: '2023', dur: '34:55', tag: '', cover: 'assets/covers/un-uncommon.jpg', url: 'https://agoetheidol.bandcamp.com/album/un-uncommon' },
 { n: '008', title: 'LONELY SOUL', kind: 'SINGLE', date: '2022', dur: '03:48', tag: 'DEBUT' }];
 
 const ContentView = ({ navigate, active }) => {
@@ -328,8 +328,9 @@ const ContentView = ({ navigate, active }) => {
 
 const ReleaseRow = ({ r }) => {
   const [hover, setHover] = useState(false);
+  const handleClick = r.url ? () => window.open(r.url, '_blank', 'noopener,noreferrer') : undefined;
   return (
-    <div className="release-row" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <div className="release-row" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={handleClick} style={{ cursor: r.url ? 'pointer' : 'default' }}>
       <div className="rr-num">{r.date}</div>
       <div className="rr-cover">
         {r.cover ?
@@ -355,7 +356,7 @@ const ReleaseRow = ({ r }) => {
       <div className="rr-meta"><b>{r.date}</b>RELEASED</div>
       <div className="rr-meta"><b>{r.dur}</b>RUNTIME {r.tag && <span style={{ color: 'var(--oxblood-bright)' }}>// {r.tag}</span>}</div>
       <div className="rr-play">
-        <span>PLAY</span>
+        <span>{r.url ? 'OPEN' : 'PLAY'}</span>
         <span className="arrow" />
       </div>
     </div>);
