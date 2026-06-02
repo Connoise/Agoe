@@ -2,7 +2,7 @@
 const { useState: uS, useEffect: uE } = React;
 
 /* Valid view slugs - keep in sync with the switch below */
-const VIEW_SLUGS = ['home', 'socials', 'content', 'about', 'projects', 'promo'];
+const VIEW_SLUGS = ['home', 'socials', 'content', 'about', 'projects', 'promo', 'art', 'code', 'video'];
 
 /* Convenience aliases so connoi.se/#music or /#music opens the All Music page */
 const SLUG_ALIASES = {
@@ -81,11 +81,15 @@ function App(){
       case 'about':   return <AboutView navigate={navigate} active={view}/>;
       case 'projects':return <ProjectsView navigate={navigate} active={view}/>;
       case 'promo':   return <PromotionView navigate={navigate} active={view}/>;
+      case 'art':     return <ArtView navigate={navigate} active={view}/>;
+      case 'code':    return <CodeView navigate={navigate} active={view}/>;
+      case 'video':   return <VideoView navigate={navigate} active={view}/>;
       default:        return <HomeView navigate={navigate} active={view}/>;
     }
   })();
 
-  return <div className="hud">{View}</div>;
+  const orange = view === 'art' || view === 'code' || view === 'video';
+  return <div className={"hud" + (orange ? " theme-orange" : "")}>{View}</div>;
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);

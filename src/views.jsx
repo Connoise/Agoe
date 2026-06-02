@@ -1,6 +1,24 @@
 /* ================ VIEWS ================ */
 const { useState, useEffect, useMemo, useRef } = React;
 
+/* Asset resolver: uses inlined blob URLs (window.__resources) in the
+   standalone/bundled build, falls back to real paths in dev. */
+const ASSET_IDS = {
+  'assets/covers/un-uncommon.jpg': 'coverUnUncommon',
+  'assets/covers/burning-the-tree.jpg': 'coverBurning',
+  'assets/covers/agoe-collection-vol1.jpg': 'coverAgoeColl',
+  'assets/covers/nothing-happens-in-april.jpg': 'coverNothing',
+  'assets/photos/agoe-01.jpg': 'photo1',
+  'assets/photos/agoe-02.jpg': 'photo2',
+  'assets/photos/agoe-03.png': 'photo3',
+  'assets/photos/agoe-04.png': 'photo4'
+};
+const resolveAsset = (p) => {
+  const r = (typeof window !== 'undefined') && window.__resources;
+  if (r && ASSET_IDS[p] && r[ASSET_IDS[p]]) return r[ASSET_IDS[p]];
+  return p;
+};
+
 /* ---- Home ---- */
 const HomeView = ({ navigate, active }) => {
   const [time, setTime] = useState(new Date());
@@ -12,11 +30,12 @@ const HomeView = ({ navigate, active }) => {
 
   return (
     <div className="page" data-screen-label="01 Home">
+      {/* TOPBAR */}
       <div className="topbar">
         <div className="left">
           <span className="mono caps">AGOE.IDOL</span>
           <span className="mono" style={{ opacity: .4 }}>//</span>
-          <span className="mono caps">INDEPENDENT ALT IDOL  //  EXPERIMENTAL POP ARTIST</span>
+          <span className="mono caps">INDEPENDENT ALT IDOL  //  EXPERIMENTAL POP ARTIST</span>
         </div>
         <div className="center">
           <span className="dot"></span>
@@ -29,10 +48,13 @@ const HomeView = ({ navigate, active }) => {
         </div>
       </div>
 
+      {/* SIDE RAILS */}
       <div className="rail left mono"><span>SYS/06</span><span>MOD/03</span><span>IDX/01</span></div>
       <div className="rail right mono"><span>IDX/01</span><span>MOD/03</span><span>SYS/06</span></div>
 
+      {/* HERO */}
       <div className="hero">
+        {/* LEFT - wordmark + tagline + nav-left */}
         <div className="hero-left">
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 10 }}>
@@ -63,12 +85,14 @@ const HomeView = ({ navigate, active }) => {
               SOUND AS SIGNAL <span className="sep">/</span> THE IDOL AS INTERFACE
             </div>
 
+            {/* Asymmetric nav - upper left */}
             <div style={{ marginTop: 46, display: 'flex', flexDirection: 'column', gap: 0, maxWidth: 280 }}>
               <NavBtn label="SOCIALS" onClick={() => navigate('socials')} active={active === 'socials'} />
               <NavBtn label="ALL MUSIC" onClick={() => navigate('content')} active={active === 'content'} />
             </div>
           </div>
 
+          {/* Telemetry block bottom */}
           <div style={{ marginTop: 50 }}>
             <div className="hairline" style={{ margin: '18px 0 14px' }}></div>
             <div className="telemetry" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 520 }}>
@@ -84,11 +108,13 @@ const HomeView = ({ navigate, active }) => {
               </div>
             </div>
           </div>
+          {/* 909 kick waveform - ritual bass signature, placed in open space at hero-left bottom */}
           <div style={{ marginTop: 28, width: '100%', maxWidth: 520, opacity: .95 }}>
             <Wave909 size={110} />
           </div>
         </div>
 
+        {/* RIGHT - wireframe stage + viewport + nav items right */}
         <div className="hero-right">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
@@ -100,7 +126,7 @@ const HomeView = ({ navigate, active }) => {
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div className="caption mono"><span className="num">03</span>STREAM</div>
+              <div className="caption mono"><span className="num">04</span>STREAM</div>
               <div className="mono" style={{ fontSize: 10, color: 'var(--ink-dim)', marginTop: 8, letterSpacing: '.18em' }}>
                 // NOW PLAYING<br />
                 <span style={{ color: 'var(--ink)' }}>"STATIC PRAYER"</span><br />
@@ -110,6 +136,7 @@ const HomeView = ({ navigate, active }) => {
             </div>
           </div>
 
+          {/* Wireframe stage */}
           <div className="wire-stage">
             <div style={{ position: 'absolute', left: '5%', top: '6%' }}>
               <WireSphere size={180} />
@@ -120,6 +147,7 @@ const HomeView = ({ navigate, active }) => {
             <div style={{ position: 'absolute', left: '26%', bottom: '2%' }}>
               <WireTerrain size={260} />
             </div>
+            {/* floating crosshairs + labels */}
             <div style={{ position: 'absolute', left: '48%', top: '42%', display: 'flex', gap: 6, alignItems: 'center' }}>
               <Crosshair size={14} />
               <span className="mono" style={{ fontSize: 9, color: 'var(--ink-ghost)', letterSpacing: '.2em' }}>NODE_04</span>
@@ -130,27 +158,27 @@ const HomeView = ({ navigate, active }) => {
             </div>
           </div>
 
-          <div className="viewport">
+          {/* Digital Portfolio launcher (replaces SIGNAL INTEGRITY viewport) */}
+          <div className="portfolio-launch">
             <span className="cnr tr"></span>
             <span className="cnr bl"></span>
-            <h3>/ SIGNAL INTEGRITY - CH.06</h3>
-            <div className="line">NOISE</div>
-            <div className="line">ACT · LISTEN · DESIRE</div>
-            <div className="bar">
-              {[1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1].map((v, i) =>
-              <i key={i} className={v ? 'on' : ''} />
-              )}
+            <div className="pl-head">
+              <span className="caption" style={{ margin: 0 }}><span className="num">03</span>DIGITAL PORTFOLIO</span>
+              <span className="pl-tag">NON-MUSIC WORK</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}>
-              <span className="mono" style={{ fontSize: 9, color: 'var(--ink-dim)', letterSpacing: '.2em' }}>// CH.06 // GAIN -3.2DB</span>
-              <span className="mono" style={{ fontSize: 9, color: 'var(--oxblood-bright)', letterSpacing: '.2em' }}>◉ REC</span>
+            <div className="pl-links" style={{ display: 'flex', flexDirection: 'column' }}>
+              <NavBtn label="DIGITAL ART" onClick={() => navigate('art')} />
+              <NavBtn label="VIDEOS & LIVESTREAMS" onClick={() => navigate('video')} />
+              <NavBtn label="CODE PROJECTS" onClick={() => navigate('code')} />
             </div>
           </div>
         </div>
       </div>
 
+      {/* ENROLLMENT - email signal intake */}
       <Enrollment />
 
+      {/* TICKER */}
       <div className="ticker">
         <div className="ticker-track">
           {Array.from({ length: 2 }).map((_, i) =>
@@ -166,6 +194,7 @@ const HomeView = ({ navigate, active }) => {
         </div>
       </div>
 
+      {/* FRAME CORNERS */}
       <span className="frame-corner fc-tl" />
       <span className="frame-corner fc-tr" />
       <span className="frame-corner fc-bl" />
@@ -174,6 +203,7 @@ const HomeView = ({ navigate, active }) => {
 
 };
 
+/* ---- Reusable nav button ---- */
 const NavBtn = ({ label, onClick, active }) =>
 <button className={"nav-item" + (active ? " active" : "")} onClick={onClick}>
     <span>{label}</span>
@@ -181,6 +211,7 @@ const NavBtn = ({ label, onClick, active }) =>
   </button>;
 
 
+/* ---- Sub-header used by inner pages ---- */
 const SubHeader = ({ idx, label, title, navigate, active }) =>
 <>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, flexWrap: 'wrap' }}>
@@ -220,11 +251,11 @@ const MiniNav = ({ navigate, active }) =>
 
 /* ---- Socials ---- */
 const SOCIALS = [
-{ name: 'INSTAGRAM', handle: '@agoetheidol', followers: '184K', posts: '0.412', cta: 'ENTER FEED',     url: 'https://instagram.com/agoetheidol' },
-{ name: 'YOUTUBE',   handle: '@agoetheidol', followers: '62.3K', posts: '1.8K', cta: 'OPEN STREAM',    url: 'https://youtube.com/@agoetheidol' },
-{ name: 'TIKTOK',    handle: '@agoetheidol', followers: '311K', posts: '0.089', cta: 'BEGIN RITUAL',   url: 'https://tiktok.com/@agoetheidol' },
-{ name: 'X',         handle: '@agoetheidol', followers: '44.1K', posts: '027',  cta: 'WATCH SIGNAL',   url: 'https://x.com/agoetheidol' },
-{ name: 'BANDCAMP',  handle: '@agoetheidol', followers: '28.7K', posts: '041',  cta: 'TUNE IN',        url: 'https://agoetheidol.bandcamp.com' }];
+{ name: 'INSTAGRAM', handle: '@agoetheidol', followers: '184K', posts: '0.412', cta: 'ENTER FEED',   url: 'https://instagram.com/agoetheidol' },
+{ name: 'YOUTUBE', handle: '@agoetheidol', followers: '62.3K', posts: '1.8K', cta: 'OPEN STREAM',   url: 'https://youtube.com/@agoetheidol' },
+{ name: 'TIKTOK', handle: '@agoetheidol', followers: '311K', posts: '0.089', cta: 'BEGIN RITUAL',   url: 'https://tiktok.com/@agoetheidol' },
+{ name: 'X', handle: '@agoetheidol', followers: '44.1K', posts: '027', cta: 'WATCH SIGNAL',   url: 'https://x.com/agoetheidol' },
+{ name: 'BANDCAMP', handle: '@agoetheidol', followers: '28.7K', posts: '041', cta: 'TUNE IN',   url: 'https://agoetheidol.bandcamp.com' }];
 
 const SocialsView = ({ navigate, active }) =>
 <div className="subview page" data-screen-label="02 Socials">
@@ -334,7 +365,7 @@ const ReleaseRow = ({ r }) => {
       <div className="rr-num">{r.date}</div>
       <div className="rr-cover">
         {r.cover ?
-        <img src={r.cover} alt={r.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: hover ? 'none' : 'grayscale(.15) contrast(1.05)', transition: 'filter .2s' }} /> :
+        <img src={resolveAsset(r.cover)} alt={r.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: hover ? 'none' : 'grayscale(.15) contrast(1.05)', transition: 'filter .2s' }} /> :
         <React.Fragment>
           <div style={{
           position: 'absolute', inset: 0,
@@ -488,6 +519,7 @@ const PromotionView = ({ navigate, active }) => {
       <SubHeader idx="06" label="PROMOTION // PRESS KIT" title="DISPATCH" navigate={navigate} active={active} />
 
       <div className="promo-grid">
+        {/* LEFT - image carousel */}
         <div
           className="promo-carousel"
           onMouseEnter={() => setPaused(true)}
@@ -497,7 +529,7 @@ const PromotionView = ({ navigate, active }) => {
             {PROMO_PHOTOS.map((p, i) =>
             <img
               key={p.src}
-              src={p.src}
+              src={resolveAsset(p.src)}
               alt={p.label}
               className={"pc-img" + (i === idx ? ' on' : '')} />
 
@@ -524,7 +556,7 @@ const PromotionView = ({ navigate, active }) => {
               onClick={() => setIdx(i)}
               aria-label={"select " + (i + 1)}>
 
-                <img src={p.src} alt="" />
+                <img src={resolveAsset(p.src)} alt="" />
               </button>
             )}
           </div>
@@ -534,6 +566,7 @@ const PromotionView = ({ navigate, active }) => {
           </div>
         </div>
 
+        {/* RIGHT - summary + links */}
         <div className="promo-info">
           <div className="caption" style={{ marginBottom: 14 }}>
             <span className="num">A</span>SUMMARY
@@ -548,11 +581,11 @@ const PromotionView = ({ navigate, active }) => {
             </div>
             <div className="pcard-body">
               <div className="pcard-cover">
-                <img src="assets/covers/un-uncommon.jpg" alt="Un-Uncommon +" />
+                <img src={resolveAsset('assets/covers/un-uncommon.jpg')} alt="Un-Uncommon +" />
               </div>
               <div className="pcard-text">
                 <div className="pcard-title">UN-UNCOMMON +</div>
-                <div className="pcard-meta">ALBUM / LP <span className="sep">/</span> 2026 <span className="sep">/</span> 42:18</div>
+                <div className="pcard-meta">ALBUM / LP <span className="sep">/</span> 2026 <span className="sep">/</span> 35:49</div>
                 <button
                   className="pcard-cta"
                   onClick={() => navigate('content')}>
@@ -647,7 +680,7 @@ const Enrollment = () => {
             value={email}
             onChange={(e) => {setEmail(e.target.value);setTouched(false);}}
             aria-label="Email address" />
-
+          
             <button type="submit" className="e-submit">
               <span>INSCRIBE</span>
               <span>→</span>
