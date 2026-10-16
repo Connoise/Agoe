@@ -26,7 +26,7 @@ const HomeView = ({ navigate, active }) => {
     const t = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
-  const ts = time.toISOString().slice(11, 19);
+  const hst = new Date(time.getTime() - 10 * 3600e3).toISOString().slice(11, 19);
 
   return (
     <div className="page" data-screen-label="01 Home">
@@ -44,7 +44,7 @@ const HomeView = ({ navigate, active }) => {
         <div className="right">
           <span className="mono">SYS/IDOL_5G v0.1.23</span>
           <span className="mono" style={{ opacity: .4 }}>//</span>
-          <span className="mono">HST 12:49:22</span>
+          <span className="mono">HST {hst}</span>
         </div>
       </div>
 
@@ -95,11 +95,11 @@ const HomeView = ({ navigate, active }) => {
           {/* Telemetry block bottom */}
           <div style={{ marginTop: 50 }}>
             <div className="hairline" style={{ margin: '18px 0 14px' }}></div>
-            <div className="telemetry" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 520 }}>
+            <div className="telemetry hero-telemetry" style={{ display: 'grid', gap: 20, maxWidth: 520 }}>
               <div>
                 <span className="k">&gt; LOCATION:</span> HONOLULU / UNDERGROUND<br />
                 <span className="k">&gt; PROTOCOL:</span> NEW ALBUM - Un-Uncommon +<br />
-                <span className="k">&gt; NEXT RITUAL:</span> 05.26.2026 - HONOLULU
+                <span className="k">&gt; NEXT RITUAL:</span> 10.27.2026 - 41 S HOTEL ST
               </div>
               <div>
                 <span className="k">&gt; VOICE RANGE:</span> 2.3 OCT / F3-A5<br />
@@ -116,22 +116,13 @@ const HomeView = ({ navigate, active }) => {
 
         {/* RIGHT - wireframe stage + viewport + nav items right */}
         <div className="hero-right">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 24 }}>
             <div>
               <div className="caption"><span className="num">02</span>NAVIGATION</div>
               <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column' }}>
                 <NavBtn label="ABOUT" onClick={() => navigate('about')} active={active === 'about'} />
                 <NavBtn label="UPCOMING PROJECTS" onClick={() => navigate('projects')} active={active === 'projects'} />
-                <NavBtn label="PROMOTION" onClick={() => navigate('promo')} active={active === 'promo'} />
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div className="caption mono"><span className="num">04</span>STREAM</div>
-              <div className="mono" style={{ fontSize: 10, color: 'var(--ink-dim)', marginTop: 8, letterSpacing: '.18em' }}>
-                // NOW PLAYING<br />
-                <span style={{ color: 'var(--ink)' }}>"STATIC PRAYER"</span><br />
-                <span style={{ color: 'var(--oxblood)' }}>━━━━━━━━━</span><span style={{ opacity: .3 }}>━━━━━━</span><br />
-                02:14 / 04:08
+                <NavBtn label="PRESS PROMO" onClick={() => navigate('promo')} active={active === 'promo'} />
               </div>
             </div>
           </div>
@@ -183,8 +174,7 @@ const HomeView = ({ navigate, active }) => {
         <div className="ticker-track">
           {Array.from({ length: 2 }).map((_, i) =>
           <React.Fragment key={i}>
-              <span>NEW SINGLE <b>"STATIC PRAYER"</b> - OUT NOW <span className="mark">◆</span></span>
-              <span>LIVE RITUAL - HONOLULU - 05.26.26 <span className="mark">◆</span></span>
+              <span>NEXT LIVE RITUAL - 41 S HOTEL ST - 10.27.26 <span className="mark">◆</span></span>
               <span>UN-UNCOMMON + / MAY 22 2026 <span className="mark">◆</span></span>
               <span>SIGNAL DEPTH 0.982 - IDOL STATE LIVE <span className="mark">◆</span></span>
               <span>ENTER THE FEED <span className="mark">◆</span></span>
@@ -242,7 +232,7 @@ const MiniNav = ({ navigate, active }) =>
   ['ALL MUSIC', 'content'],
   ['ABOUT', 'about'],
   ['UPCOMING PROJECTS', 'projects'],
-  ['PROMOTION', 'promo']].
+  ['PRESS PROMO', 'promo']].
   map(([l, k]) =>
   <NavBtn key={k} label={l} onClick={() => navigate(k)} active={active === k} />
   )}
@@ -282,7 +272,7 @@ const SocialsView = ({ navigate, active }) =>
       <div className="r" />
     </div>
 
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 40, marginTop: 20 }}>
+    <div className="notes-grid">
       <div className="telemetry">
         <div className="caption" style={{ marginBottom: 10 }}><span className="num">A</span>FOLLOW DIRECT</div>
         Type <span style={{ color: 'var(--oxblood)' }}>@agoetheidol</span> into any feed. The shrine opens where you're standing.
@@ -319,8 +309,8 @@ const ContentView = ({ navigate, active }) => {
   }, [filter]);
 
   return (
-    <div className="subview page" data-screen-label="03 New Content">
-      <SubHeader idx="03" label="NEW CONTENT // RELEASE INDEX" title="TRANSMISSIONS" navigate={navigate} active={active} />
+    <div className="subview page" data-screen-label="03 All Music">
+      <SubHeader idx="03" label="ALL MUSIC // RELEASE INDEX" title="TRANSMISSIONS" navigate={navigate} active={active} />
 
       <div style={{ display: 'flex', gap: 30, marginTop: 30, alignItems: 'center', flexWrap: 'wrap' }}>
         <span className="caption"><span className="num">//</span>FILTER</span>
@@ -428,7 +418,7 @@ const AboutView = ({ navigate, active }) =>
           <div className="row"><span>CLASS</span><span>ALT IDOL/EXPERIMENTAL POP</span></div>
           <div className="row"><span>ORIGIN</span><span>HONOLULU</span></div>
           <div className="row"><span>ACTIVE</span><span>2021 - PRESENT</span></div>
-          <div className="row"><span>PROTOCOL</span><span>NEW ALBUM - UNUNCOMMON +</span></div>
+          <div className="row"><span>PROTOCOL</span><span>NEW ALBUM - UN-UNCOMMON +</span></div>
           <div className="row"><span>LABEL</span><span>CONNOI.SE</span></div>
           <div className="row"><span>MGMT</span><span>CONNOI.SE</span></div>
           <div className="row"><span>SIGNAL DEPTH</span><span style={{ color: 'var(--oxblood-bright)' }}>0.982</span></div>
@@ -451,8 +441,8 @@ const AboutView = ({ navigate, active }) =>
 
 /* ---- Projects ---- */
 const PROJECTS = [
-{ n: 'P01', title: 'WHISPERING STAR', type: 'FULL LENGTH ALBUM', year: '2026', collab: 'NA' },
-{ n: 'P02', title: 'IF/IDOL', type: 'FULL LENGTH ALBUM / TYPE', year: '2026-27', collab: 'NA ' }];
+{ n: 'P01', title: 'WHISPERING STAR', type: 'FULL LENGTH ALBUM', year: 'Early 2027', collab: 'NA' },
+{ n: 'P02', title: 'IF/IDOL', type: 'FULL LENGTH ALBUM / TYPE', year: '2026-27', collab: 'NA' }];
 
 
 const ProjectsView = ({ navigate, active }) =>
@@ -480,7 +470,7 @@ const ProjectsView = ({ navigate, active }) =>
       <div className="r" />
     </div>
 
-    <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 60, marginTop: 30, alignItems: 'center' }}>
+    <div className="collab-grid">
       <div className="telemetry">
         <div className="caption" style={{ marginBottom: 12 }}>/ COMMISSION / COLLABORATION</div>
         Agoe accepts frequent collaboration<br />
@@ -515,8 +505,8 @@ const PromotionView = ({ navigate, active }) => {
   const cur = PROMO_PHOTOS[idx];
 
   return (
-    <div className="subview page" data-screen-label="06 Promotion">
-      <SubHeader idx="06" label="PROMOTION // PRESS KIT" title="DISPATCH" navigate={navigate} active={active} />
+    <div className="subview page" data-screen-label="06 Press Promo">
+      <SubHeader idx="06" label="PRESS PROMO // PRESS KIT" title="DISPATCH" navigate={navigate} active={active} />
 
       <div className="promo-grid">
         {/* LEFT - image carousel */}
