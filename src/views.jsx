@@ -349,9 +349,9 @@ const ContentView = ({ navigate, active }) => {
 
 const ReleaseRow = ({ r }) => {
   const [hover, setHover] = useState(false);
-  const handleClick = r.url ? () => window.open(r.url, '_blank', 'noopener,noreferrer') : undefined;
+  const Row = r.url ? 'a' : 'div';
   return (
-    <div className="release-row" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={handleClick} style={{ cursor: r.url ? 'pointer' : 'default' }}>
+    <Row className="release-row" href={r.url || undefined} target={r.url ? '_blank' : undefined} rel={r.url ? 'noopener noreferrer' : undefined} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ cursor: r.url ? 'pointer' : 'default' }}>
       <div className="rr-num">{r.date}</div>
       <div className="rr-cover">
         {r.cover ?
@@ -380,7 +380,7 @@ const ReleaseRow = ({ r }) => {
         <span>{r.url ? 'OPEN' : 'PLAY'}</span>
         <span className="arrow" />
       </div>
-    </div>);
+    </Row>);
 
 };
 
