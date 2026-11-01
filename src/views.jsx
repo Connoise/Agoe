@@ -99,7 +99,7 @@ const HomeView = ({ navigate, active }) => {
               <div>
                 <span className="k">&gt; LOCATION:</span> HONOLULU / UNDERGROUND<br />
                 <span className="k">&gt; PROTOCOL:</span> NEW ALBUM - Un-Uncommon +<br />
-                <span className="k">&gt; NEXT RITUAL:</span> 10.27.2026 - 41 S HOTEL ST
+                <span className="k">&gt; NEXT RITUAL:</span> soon!
               </div>
               <div>
                 <span className="k">&gt; VOICE RANGE:</span> 2.3 OCT / F3-A5<br />
@@ -174,7 +174,7 @@ const HomeView = ({ navigate, active }) => {
         <div className="ticker-track">
           {Array.from({ length: 2 }).map((_, i) =>
           <React.Fragment key={i}>
-              <span>NEXT LIVE RITUAL - 41 S HOTEL ST - 10.27.26 <span className="mark">◆</span></span>
+              <span>NEXT LIVE RITUAL - soon! <span className="mark">◆</span></span>
               <span>UN-UNCOMMON + / MAY 22 2026 <span className="mark">◆</span></span>
               <span>SIGNAL DEPTH 0.982 - IDOL STATE LIVE <span className="mark">◆</span></span>
               <span>ENTER THE FEED <span className="mark">◆</span></span>
