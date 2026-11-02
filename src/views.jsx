@@ -352,7 +352,7 @@ const ReleaseRow = ({ r }) => {
   const [hover, setHover] = useState(false);
   const Row = r.url ? 'a' : 'div';
   return (
-    <Row className="release-row" href={r.url || undefined} target={r.url ? '_blank' : undefined} rel={r.url ? 'noopener noreferrer' : undefined} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ cursor: r.url ? 'pointer' : 'default' }}>
+    <Row className="release-row" href={r.url || undefined} target={r.url ? '_blank' : undefined} rel={r.url ? 'noopener noreferrer' : undefined} onMouseEnter={r.url ? () => setHover(true) : undefined} onMouseLeave={r.url ? () => setHover(false) : undefined} style={{ cursor: r.url ? 'pointer' : 'default' }}>
       <div className="rr-num">{r.date}</div>
       <div className="rr-cover">
         {r.cover ?
@@ -377,10 +377,10 @@ const ReleaseRow = ({ r }) => {
       </div>
       <div className="rr-meta"><b>{r.date}</b>RELEASED</div>
       <div className="rr-meta"><b>{r.dur}</b>RUNTIME {r.tag && <span style={{ color: 'var(--oxblood-bright)' }}>// {r.tag}</span>}</div>
-      <div className="rr-play">
-        <span>{r.url ? 'OPEN' : 'PLAY'}</span>
+      {r.url && <div className="rr-play">
+        <span>OPEN</span>
         <span className="arrow" />
-      </div>
+      </div>}
     </Row>);
 
 };
