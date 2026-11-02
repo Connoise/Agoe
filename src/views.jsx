@@ -173,13 +173,13 @@ const HomeView = ({ navigate, active }) => {
       <div className="ticker">
         <div className="ticker-track">
           {Array.from({ length: 2 }).map((_, i) =>
-          <React.Fragment key={i}>
+          <div className="ticker-copy" key={i} aria-hidden={i === 1 ? true : undefined}>
               <span>NEXT LIVE RITUAL - soon! <span className="mark">◆</span></span>
               <span>UN-UNCOMMON + / MAY 22 2026 <span className="mark">◆</span></span>
               <span>SIGNAL DEPTH 0.982 - IDOL STATE LIVE <span className="mark">◆</span></span>
               <span>ENTER THE FEED <span className="mark">◆</span></span>
               <span>WATCHING BACK <span className="mark">◆</span></span>
-            </React.Fragment>
+            </div>
           )}
         </div>
       </div>
@@ -495,12 +495,22 @@ const PROMO_PHOTOS = [
 const PromotionView = ({ navigate, active }) => {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   useEffect(() => {
-    if (paused) return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setReducedMotion(media.matches);
+    media.addEventListener('change', updatePreference);
+    updatePreference();
+    return () => media.removeEventListener('change', updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (paused || reducedMotion) return;
     const t = setInterval(() => setIdx((i) => (i + 1) % PROMO_PHOTOS.length), 4200);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, reducedMotion]);
 
   const go = (n) => setIdx((PROMO_PHOTOS.length + n) % PROMO_PHOTOS.length);
   const cur = PROMO_PHOTOS[idx];

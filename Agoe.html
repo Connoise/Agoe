@@ -342,6 +342,7 @@
     text-transform: uppercase;
     color: var(--ink-dim);
   }
+  .ticker-copy{ display: contents; }
   .ticker-track span b{ color: var(--oxblood-bright); font-weight: 500; }
   .ticker-track span .mark{ color: var(--oxblood); margin: 0 12px; }
   @keyframes tick{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -1243,6 +1244,26 @@
     .release-row .rr-play{ grid-column: 3; grid-row: 1 / span 2; }
     .subview{ padding: 30px 20px 60px;}
     .social-card{ grid-column: span 12; }
+  }
+
+  /* Honor the visitor's motion preference without changing normal mode. */
+  @media (prefers-reduced-motion: reduce){
+    .dot, .wire-stage .rot, .wire-stage .rot-slow,
+    .ticker-track, .page, .glitch-flash.go, .pc-progress-bar{
+      animation: none;
+    }
+    .page{ transform: translateY(0); }
+    .ticker-track{
+      flex-wrap: wrap; white-space: normal;
+      gap: 12px 24px; overflow-wrap: anywhere;
+    }
+    .ticker-copy[aria-hidden="true"]{ display: none; }
+    .pc-progress{ visibility: hidden; }
+    .pc-img, .pc-nav, .pc-thumb, .pc-thumb img,
+    .release-row, .rr-cover img, .rr-cover > div,
+    .pl-link, .pl-arrow, .code-row, .cr-cta span{
+      transition: none !important;
+    }
   }
 </style>
 </head>
