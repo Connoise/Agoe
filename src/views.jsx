@@ -317,6 +317,7 @@ const ContentView = ({ navigate, active }) => {
         {['ALL', 'SINGLES', 'ALBUMS', 'REMIX'].map((f) =>
         <button key={f}
         onClick={() => setFilter(f)}
+        aria-pressed={filter === f}
         className="caps"
         style={{
           background: 'transparent',
