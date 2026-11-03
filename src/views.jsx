@@ -645,16 +645,19 @@ const PromotionView = ({ navigate, active }) => {
 
 
 const Enrollment = () => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [touched, setTouched] = useState(false);
-  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!valid) {setTouched(true);return;}
-    setSubmitted(true);
-  };
+  const frameRef = useRef(null);
+  useEffect(() => {
+    const resizeFrame = (event) => {
+      if (event.origin !== location.origin ||
+          event.source !== frameRef.current?.contentWindow ||
+          event.data?.type !== 'agoe:signup:resize') return;
+      const height = event.data.height;
+      if (typeof height !== 'number' || !Number.isFinite(height)) return;
+      frameRef.current.style.height = `${Math.ceil(Math.min(2400, Math.max(112, height)))}px`;
+    };
+    window.addEventListener('message', resizeFrame);
+    return () => window.removeEventListener('message', resizeFrame);
+  }, []);
 
   return (
     <div className="enroll">
@@ -673,30 +676,13 @@ const Enrollment = () => {
       </div>
 
       <div>
-        {!submitted ?
-        <form onSubmit={onSubmit} noValidate>
-            <input
-            type="email"
-            placeholder="NAME@FREQUENCY.ORG"
-            value={email}
-            onChange={(e) => {setEmail(e.target.value);setTouched(false);}}
-            aria-label="Email address" />
-          
-            <button type="submit" className="e-submit">
-              <span>INSCRIBE</span>
-              <span>→</span>
-            </button>
-          </form> :
-
-        <div className="e-ok">
-            <span style={{ width: 8, height: 8, background: 'var(--oxblood-bright)', display: 'inline-block', boxShadow: '0 0 8px var(--oxblood-bright)' }} />
-            SIGNAL RECEIVED - <span style={{ color: 'var(--ink)' }}>{email}</span> - WATCHING BACK.
-          </div>
-        }
+        <iframe
+          ref={frameRef}
+          title="Join Agoe's email list"
+          className="enroll-frame"
+          src="/pages/newsletter-signup.html" />
         <div className="e-terms">
-          {touched && !valid ?
-          <span style={{ color: 'var(--oxblood-bright)' }}>// INVALID FREQUENCY - PLEASE RE-TUNE</span> :
-          <>// DISPATCH ~1× PER CYCLE · <b>UNSUBSCRIBE</b> IN ANY TRANSMISSION · NEVER SOLD</>}
+          // DISPATCH ~1× PER CYCLE · <b>UNSUBSCRIBE</b> IN ANY TRANSMISSION · NEVER SOLD
         </div>
       </div>
     </div>);

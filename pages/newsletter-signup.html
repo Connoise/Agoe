@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join Agoe's email list — Signal Intake</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --base: #0A0606; --oxblood: #801515; --oxblood-bright: #B71D1D; --ink: #E8D8D8; --ink-dim: #8a6e6e; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: transparent; color: var(--ink); }
+  body { display: flow-root; font-family: 'Space Grotesk', sans-serif; padding: 3px; }
+  .enroll { width: 100%; }
+  .enroll form { margin-top: 6px; }
+  .enroll [data-element="fields"] { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0; align-items: stretch; border-bottom: 1px solid var(--oxblood); }
+  .enroll input[type=email] { min-width: 0; background: transparent; border: none; color: var(--ink); font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .12em; padding: 14px 4px; width: 100%; text-transform: lowercase; }
+  .enroll input[type=email]::placeholder { color: var(--ink-dim); opacity: 1; letter-spacing: .2em; text-transform: uppercase; }
+  .enroll input[type=email]:focus { box-shadow: 0 2px 0 var(--oxblood-bright); }
+  .enroll .e-submit { background: transparent; border: 1px solid var(--oxblood); color: var(--oxblood); padding: 12px 18px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: background .18s, color .18s, box-shadow .18s; }
+  .enroll .e-submit:hover:not(:disabled) { color: #fff; background: var(--oxblood-bright); border-color: var(--oxblood-bright); box-shadow: 0 0 16px rgba(183,29,29,.55); }
+  .enroll :is(input, button, a):focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .enroll button:disabled { cursor: wait; }
+  .enroll .e-submit[data-active] .submit-label { display: none; }
+  .enroll .e-submit[data-active]::before { content: 'SENDING'; color: var(--ink); }
+  .enroll [data-element="errors"], .enroll [data-element="success"], .loader-status { font: 12px/1.6 'JetBrains Mono', monospace; color: var(--ink); overflow-wrap: anywhere; }
+  .enroll [data-element="errors"] { margin: 0; padding: 0 0 0 18px; }
+  .enroll [data-element="errors"]:empty { display: none; }
+  .enroll [data-element="success"] { padding: 14px 0; }
+  .enroll .formkit-powered-by-convertkit { display: inline-block; margin-top: 12px; color: var(--ink-dim); font: 11px/1.6 'JetBrains Mono', monospace; text-decoration: underline; }
+  .enroll .formkit-powered-by-convertkit:hover { color: var(--ink); }
+  .loader-status { margin: 8px 0 0; }
+  .loader-status:empty, [hidden] { display: none !important; }
+  #retry { margin-top: 8px; padding: 8px 12px; background: var(--base); color: var(--ink); border: 1px solid var(--oxblood-bright); font: 12px 'Space Grotesk', sans-serif; cursor: pointer; }
+  @media (max-width: 360px) { .enroll .e-submit { padding: 12px 10px; letter-spacing: .12em; } }
+  .formkit-overlay .formkit-modal.guard { min-width: 0; max-width: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    /* Kit completes overlay dismissal on its native transitionend event. */
+    .formkit-overlay { transition: opacity .01ms linear !important; }
+  }
+</style>
+</head>
+<body>
+<div class="enroll">
+  <form action="https://app.kit.com/forms/10139937/subscriptions" method="post" class="seva-form formkit-form" data-sv-form="10139937" data-uid="0638e25882" data-format="inline" data-version="5" min-width="400 500 600 700 800">
+    <ul data-element="errors" role="alert"></ul>
+    <div data-element="fields">
+      <input name="email_address" type="email" required autocomplete="email" aria-label="Email Address" placeholder="NAME@FREQUENCY.ORG" disabled>
+      <button type="submit" data-element="submit" class="formkit-submit e-submit" disabled><span class="submit-label">INSCRIBE</span><span aria-hidden="true">→</span></button>
+    </div>
+    <a href="https://kit.com/features/forms?utm_campaign=poweredby&utm_content=form&utm_medium=referral&utm_source=dynamic" data-element="powered-by" class="formkit-powered-by-convertkit" data-variant="dark" target="_blank" rel="nofollow noopener">Built with Kit</a>
+  </form>
+  <p class="loader-status" id="loader-status" role="status">Loading signup form…</p>
+  <button type="button" id="retry" hidden>Retry loading</button>
+  <noscript><p>JavaScript is required to load this signup form. No subscription has been submitted.</p></noscript>
+</div>
+<script type="application/json" id="kit-options">{"settings":{"after_subscribe":{"action":"message","success_message":"Success! Now check your email to confirm your subscription.","redirect_url":""},"analytics":{"google":null,"fathom":null,"facebook":null,"segment":null,"pinterest":null,"sparkloop":null,"googletagmanager":null},"modal":{"trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"powered_by":{"show":true,"url":"https://kit.com/features/forms?utm_campaign=poweredby&utm_content=form&utm_medium=referral&utm_source=dynamic"},"recaptcha":{"enabled":false},"return_visitor":{"action":"show","custom_content":""},"slide_in":{"display_in":"bottom_right","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"sticky_bar":{"display_in":"top","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15}},"version":"5"}</script>
+<script>
+(() => {
+  'use strict';
+  const form = document.querySelector('form');
+  const status = document.getElementById('loader-status');
+  const retry = document.getElementById('retry');
+  form.dataset.options = JSON.stringify(JSON.parse(document.getElementById('kit-options').textContent));
+  let ready = false;
+  let script;
+  let timeout;
+  let poll;
+  let resizeFrame = 0;
+  let focusedSuccess = null;
+  const controls = () => form.querySelectorAll('input, button[type="submit"]');
+  const clearLoadingTimers = () => { clearTimeout(timeout); clearInterval(poll); };
+  // This capture gate prevents native fallback posts before Kit is ready.
+  form.addEventListener('submit', event => {
+    if (!ready) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }, true);
+  const queueResize = () => {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      let height = document.body.getBoundingClientRect().height;
+      document.querySelectorAll('.formkit-overlay[data-active="true"]').forEach(overlay => {
+        const overlayStyle = getComputedStyle(overlay);
+        if (overlayStyle.display === 'none' || overlayStyle.visibility === 'hidden') return;
+        const modal = overlay.querySelector('.formkit-modal.guard');
+        if (!modal) return;
+        // Read Kit's explicit content height, not its viewport-clamped box.
+        const inlineHeight = modal.style.height.trim();
+        const guardHeight = /^\d+(?:\.\d+)?px$/.test(inlineHeight) ? parseFloat(inlineHeight) : 0;
+        const padding = (parseFloat(overlayStyle.paddingTop) || 0) + (parseFloat(overlayStyle.paddingBottom) || 0);
+        height = Math.max(height, 400, (guardHeight > 0 ? guardHeight : 400) + padding + 2);
+      });
+      parent.postMessage({ type: 'agoe:signup:resize', height: Math.min(2400, Math.ceil(height)) }, location.origin);
+    });
+  };
+  const resizeObserver = new ResizeObserver(queueResize);
+  resizeObserver.observe(document.body);
+  const mutationObserver = new MutationObserver(() => {
+    const success = form.querySelector('[data-element="success"]');
+    if (success && success !== focusedSuccess) {
+      focusedSuccess = success;
+      success.setAttribute('role', 'status');
+      success.tabIndex = -1;
+      success.focus();
+    }
+    queueResize();
+  });
+  mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
+  const checkReady = () => {
+    if (document.readyState === 'loading') return;
+    const entries = window.__sv_forms;
+    const initialized = entries && Object.values(entries).some(entry => entry && entry.element === form && entry.initialized === true);
+    if (!initialized) return;
+    ready = true;
+    clearLoadingTimers();
+    controls().forEach(control => { control.disabled = false; });
+    status.textContent = '';
+    retry.hidden = true;
+    queueResize();
+  };
+  const fail = () => {
+    if (ready) return;
+    clearLoadingTimers();
+    if (script) { script.onload = null; script.onerror = null; script.remove(); }
+    controls().forEach(control => { control.disabled = true; });
+    status.textContent = 'The signup form could not load. Nothing has been submitted. Please retry loading.';
+    retry.hidden = false;
+    queueResize();
+  };
+  const load = () => {
+    clearLoadingTimers();
+    ready = false;
+    controls().forEach(control => { control.disabled = true; });
+    retry.hidden = true;
+    status.textContent = 'Loading signup form…';
+    // Retry only loads the official script; it never submits the form.
+    if (script) { script.onload = null; script.onerror = null; script.remove(); }
+    script = document.createElement('script');
+    script.src = 'https://f.convertkit.com/ckjs/ck.5.js';
+    script.async = true;
+    script.onload = checkReady;
+    script.onerror = fail;
+    timeout = setTimeout(fail, 15000);
+    poll = setInterval(checkReady, 100);
+    document.body.appendChild(script);
+    queueResize();
+  };
+  retry.addEventListener('click', load);
+  document.addEventListener('DOMContentLoaded', checkReady, { once: true });
+  window.addEventListener('load', queueResize, { once: true });
+  load();
+})();
+</script>
+</body>
+</html>
