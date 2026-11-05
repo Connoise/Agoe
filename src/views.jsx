@@ -645,17 +645,6 @@ const PromotionView = ({ navigate, active }) => {
 
 
 const Enrollment = () => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [touched, setTouched] = useState(false);
-  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!valid) {setTouched(true);return;}
-    setSubmitted(true);
-  };
-
   return (
     <div className="enroll">
       <div>
@@ -672,31 +661,19 @@ const Enrollment = () => {
         </div>
       </div>
 
-      <div>
-        {!submitted ?
-        <form onSubmit={onSubmit} noValidate>
-            <input
-            type="email"
-            placeholder="NAME@FREQUENCY.ORG"
-            value={email}
-            onChange={(e) => {setEmail(e.target.value);setTouched(false);}}
-            aria-label="Email address" />
-          
-            <button type="submit" className="e-submit">
-              <span>INSCRIBE</span>
-              <span>→</span>
-            </button>
-          </form> :
-
-        <div className="e-ok">
-            <span style={{ width: 8, height: 8, background: 'var(--oxblood-bright)', display: 'inline-block', boxShadow: '0 0 8px var(--oxblood-bright)' }} />
-            SIGNAL RECEIVED - <span style={{ color: 'var(--ink)' }}>{email}</span> - WATCHING BACK.
-          </div>
-        }
+      <div className="e-signup">
+        <a
+          className="e-submit"
+          href="https://agoe-the-idol.kit.com/0638e25882"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="INSCRIBE — sign up with Kit (opens in a new tab)">
+          <span>INSCRIBE</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <div className="e-handoff">CONTINUE ON KIT · OPENS IN A NEW TAB</div>
         <div className="e-terms">
-          {touched && !valid ?
-          <span style={{ color: 'var(--oxblood-bright)' }}>// INVALID FREQUENCY - PLEASE RE-TUNE</span> :
-          <>// DISPATCH ~1× PER CYCLE · <b>UNSUBSCRIBE</b> IN ANY TRANSMISSION · NEVER SOLD</>}
+          // DISPATCH ~1× PER CYCLE · <b>UNSUBSCRIBE</b> IN ANY TRANSMISSION · NEVER SOLD
         </div>
       </div>
     </div>);
