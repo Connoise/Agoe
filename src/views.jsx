@@ -442,7 +442,7 @@ const AboutView = ({ navigate, active }) =>
 
 /* ---- Projects ---- */
 const PROJECTS = [
-{ n: 'P01', title: 'WHISPERING STAR', type: 'FULL LENGTH ALBUM', year: 'Early 2027', collab: 'NA' },
+{ n: 'P01', title: 'WHISPERING STAR', type: 'FULL LENGTH ALBUM', year: '2027', collab: 'NA' },
 { n: 'P02', title: 'IF/IDOL', type: 'FULL LENGTH ALBUM / TYPE', year: '2026-27', collab: 'NA' }];
 
 
